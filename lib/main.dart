@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lupin_app/after_login.dart';
 
+import 'login.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -43,21 +45,21 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: const Color(0xFFF5F0E1),
       ),
-      home: const LoginPage(title: 'Flutter Demo Home Page'),
+      home: const App(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, required this.title}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<App> createState() => _AppState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
@@ -72,24 +74,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const AfterLogin(),
-                  ),
-                );
-              },
-              child: const Text("로그인"),
-            ),
-          ],
-        ),
-      ),
+      body: LoginPage(),
     );
   }
 }
