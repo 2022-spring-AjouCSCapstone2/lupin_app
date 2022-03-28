@@ -1,16 +1,21 @@
 # lupin_app
 
-A new Flutter project.
+대면 도우미
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+develop에서 branch 따서 Pull request하면 될 거 같습니다.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```dart
+SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ));
+```
+```dart
+SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+      ),
+    );
+```
+코드는 위와 같이 괄호가 끝날 때 모두 , 를 붙여줘야 자동정렬이 깔끔하게 돼요
