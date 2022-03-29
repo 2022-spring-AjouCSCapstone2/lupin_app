@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lupin_app/after_login.dart';
+import 'package:lupin_app/login.dart';
+import 'package:lupin_app/signup.dart';
 
 void main() {
   runApp(const MyApp());
