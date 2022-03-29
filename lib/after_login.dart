@@ -145,7 +145,7 @@ class _FirstState extends State<First> {
             const SizedBox(height: 20),
             TextField(
               controller: _searchController,
-              decoration: const InputDecoration(filled: true, labelText: '이메일'),
+              decoration: const InputDecoration(filled: true, labelText: '검색'),
             ),
             const SizedBox(height: 20),
             ...List.generate(
@@ -168,13 +168,6 @@ class _FirstState extends State<First> {
                 );
                 },
             ),
-            // ListView.builder(
-            //   shrinkWrap: true,
-            //   itemCount: test.length,
-            //   itemBuilder: (context, index) {
-            //     return makeColumnContainer(index);
-            //   },
-            // ),
           ],
         ),
       ),
