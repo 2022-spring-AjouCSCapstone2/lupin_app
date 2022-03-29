@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lupin_app/after_login.dart';
 import 'package:lupin_app/signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -54,7 +55,14 @@ class _LoginPageState extends State<LoginPage> {
               height: 50.0,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AfterLogin(),
+                  ),
+                );
+              },
               child: const Text("로그인"),
             ),
             const SizedBox(
