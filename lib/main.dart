@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        primaryColor: const Color(0xFF5db075),
         textTheme: const TextTheme(
           headline3: TextStyle(
             color: Colors.black,
