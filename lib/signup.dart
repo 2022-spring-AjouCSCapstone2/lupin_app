@@ -21,7 +21,26 @@ class _SignUpPageState extends State<SignUpPage> {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
-            const SizedBox(height: 50),
+            const SizedBox(height: 40),
+            Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.arrow_back_ios),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    "회원가입",
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 40),
             TextField(
               controller: _nameController,
               decoration: const InputDecoration(filled: true, labelText: '이름'),
@@ -48,8 +67,10 @@ class _SignUpPageState extends State<SignUpPage> {
               controller: _sIdController,
               decoration: const InputDecoration(filled: true, labelText: '학번'),
             ),
+            const SizedBox(height: 12.0),
             CheckboxListTile(
-                title: const Text('개인정보 수집에 동의합니다.'),
+                title: const Text('개인정보 수집에 동의합니다.',
+                    style: TextStyle(color: Colors.grey)),
                 value: _isChecked,
                 controlAffinity: ListTileControlAffinity.leading,
                 onChanged: (bool? value) {
@@ -60,12 +81,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     });
                   }
                 }),
-            const SizedBox(height: 50.0),
+            const SizedBox(height: 12.0),
             ElevatedButton(
               onPressed: () {},
               child: const Text("회원가입"),
             ),
-            ElevatedButton(
+            TextButton(
               onPressed: () {},
               child: const Text("비밀번호를 잊으셨나요?"),
             )
