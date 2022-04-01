@@ -16,10 +16,15 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool? _isChecked = false;
 
-  FocusNode _emailFocus = new FocusNode();
-  FocusNode _pwFocus = new FocusNode();
-
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  buttonEnable(){
+    return _isChecked;
+  }
+
+  buttonFunction(){
+    formKey.currentState?.validate();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,49 +55,56 @@ class _SignUpPageState extends State<SignUpPage> {
                   ],
                 ),
                 const SizedBox(height: 40),
-                TextField(
+                TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(
                       filled: true,
                       labelText: '이름'
                   ),
+                  validator: (value) => CheckValidate().validateName(value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
                 SizedBox(height: 12.0),
                 TextFormField(
                   controller: _mailController,
-                  focusNode: _emailFocus,
                   decoration: InputDecoration(
                       filled: true,
                       labelText: '이메일'
                   ),
-                  validator: (value) => CheckValidate().validateEmail(_emailFocus, value),
+                  validator: (value) => CheckValidate().validateEmail(value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
                 SizedBox(height: 12.0),
                 TextFormField(
                   controller: _pwController,
-                  focusNode: _pwFocus,
                   decoration: InputDecoration(
                       filled: true,
                       labelText: '비밀번호',
                       helperText: '특수문자, 대소문자, 숫자 포함 8자리 이상 15자 이내로 입력'
                   ),
-                  validator: (value) => CheckValidate().validatePassword(_pwFocus, value),
+                  validator: (value) => CheckValidate().validatePassword(value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   obscureText: true,
                 ),
-                SizedBox(height: 12.0),TextField(
+                SizedBox(height: 12.0),
+                TextFormField(
                   controller: _departController,
                   decoration: InputDecoration(
                       filled: true,
                       labelText: '학과'
                   ),
+                  validator: (value) => CheckValidate().validateDepart(value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
                 SizedBox(height: 12.0),
-                TextField(
+                TextFormField(
                   controller: _sIdController,
                   decoration: InputDecoration(
                       filled: true,
                       labelText: '학번'
                   ),
+                  validator: (value) => CheckValidate().validateSId(value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
                 const SizedBox(height: 12.0),
                 CheckboxListTile(
@@ -101,7 +113,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     controlAffinity: ListTileControlAffinity.leading,
                     onChanged: (bool? value) {
                       if(value != null){
-                        print(value);
                         setState(() {
                           _isChecked = value;
                         });
@@ -110,9 +121,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 const SizedBox(height: 12.0),
                 ElevatedButton(
-                  onPressed: (){
-                    formKey.currentState?.validate();
-                  },
+                  onPressed: buttonEnable() ? () => buttonFunction() : null,
                   child: Text("회원가입"),
                 ),
                 TextButton(
