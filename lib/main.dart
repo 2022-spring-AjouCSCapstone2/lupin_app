@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lupin_app/after_login.dart';
+import 'package:lupin_app/login.dart';
+import 'package:lupin_app/signup.dart';
 
 import 'login.dart';
 
@@ -37,13 +39,64 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        primaryColor: const Color(0xFF5db075),
+        textTheme: const TextTheme(
+          headline3: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+          headline4: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+          headline5: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        checkboxTheme: CheckboxThemeData(
+          fillColor: MaterialStateProperty.all(
+            const Color(0xFF5db075),
+          ),
+          side: const BorderSide(
+            color: Colors.grey,
+          ),
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 0.0),
+            borderRadius: BorderRadius.all(
+              Radius.elliptical(13, 13),
+            ),
+          ),
+          labelStyle: TextStyle(color: Colors.grey),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.elliptical(13, 13),
+            ),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            shape: const StadiumBorder(),
+            onPrimary: Colors.white,
+            fixedSize: const Size(100, 60),
+          ),
+        ),
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: createMaterialColor(
-            const Color(0xFF1E3D59),
+            const Color(0xFF5db075),
           ),
           accentColor: const Color(0xFFff6e40),
         ),
-        scaffoldBackgroundColor: const Color(0xFFF5F0E1),
+        scaffoldBackgroundColor: Colors.white,
       ),
       home: const App(title: 'Flutter Demo Home Page'),
     );

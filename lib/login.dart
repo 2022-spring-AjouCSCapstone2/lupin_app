@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lupin_app/after_login.dart';
 import 'package:lupin_app/signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -19,7 +20,26 @@ class _LoginPageState extends State<LoginPage> {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
-            const SizedBox(height: 200.0),
+            const SizedBox(height: 170.0),
+            Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.arrow_back_ios),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    "로그인",
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 40.0),
             TextField(
               controller: _usernameController,
               decoration: const InputDecoration(filled: true, labelText: '이메일'),
@@ -35,8 +55,18 @@ class _LoginPageState extends State<LoginPage> {
               height: 50.0,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AfterLogin(),
+                  ),
+                );
+              },
               child: const Text("로그인"),
+            ),
+            const SizedBox(
+              height: 20.0,
             ),
             ElevatedButton(
               onPressed: () {
@@ -49,7 +79,10 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: const Text("회원가입"),
             ),
-            ElevatedButton(
+            const SizedBox(
+              height: 20.0,
+            ),
+            TextButton(
               onPressed: () {},
               child: const Text("비밀번호를 잊으셨나요?"),
             )

@@ -79,11 +79,15 @@ class _FirstState extends State<First> {
   List test = [];
   int count = 0;
 
+  var _searchController;
+
   makeColumnContainer(index) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
-          color: Theme.of(context).primaryColor,
+          color: Theme
+              .of(context)
+              .primaryColor,
           width: 3,
         ),
         borderRadius: BorderRadius.circular(6),
@@ -96,16 +100,6 @@ class _FirstState extends State<First> {
             child: Text(
               "${index.toString()}번 수업",
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const Room(),
-                  ));
-            },
-            child: Text("참가"),
           ),
         ],
       ),
@@ -123,11 +117,59 @@ class _FirstState extends State<First> {
         },
         child: const Icon(Icons.add),
       ),
-      body: ListView.builder(
-        itemCount: test.length,
-        itemBuilder: (context, index) {
-          return makeColumnContainer(index);
-        },
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          children: [
+            Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.arrow_back_ios),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    "수업 목록",
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headline3,
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _searchController,
+              decoration: const InputDecoration(filled: true, labelText: '검색'),
+            ),
+            const SizedBox(height: 20),
+            ...List.generate(
+              test.length,
+                  (index) {
+                return Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme
+                              .of(context)
+                              .primaryColor, width: 1),
+                      borderRadius: BorderRadius.all(
+                      Radius.elliptical(13, 13),
+                ),
+                ),
+                margin: const EdgeInsets.all(8),
+                child: ListTile(
+                title: Text("수업 이름"),
+                ),
+                );
+                },
+            ),
+          ],
+        ),
       ),
     );
   }
