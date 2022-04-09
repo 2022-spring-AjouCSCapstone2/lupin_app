@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lupin_app/after_login.dart';
-import 'package:lupin_app/login.dart';
-import 'package:lupin_app/signup.dart';
+import 'package:lupin_app/src/provider/course_provider.dart';
+import 'package:lupin_app/src/ui/0/login.dart';
+import 'package:provider/provider.dart';
 
-import 'login.dart';
+import 'src/ui/0/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,71 +34,84 @@ class MyApp extends StatelessWidget {
     return MaterialColor(color.value, swatch);
   }
 
+  void initState() {}
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            textStyle: const TextStyle(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<CourseProvider>(
+          create: (_) => CourseProvider(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          primaryColor: const Color(0xFF5db075),
+          textTheme: const TextTheme(
+            headline3: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+            headline4: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+            headline5: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+            headline6: TextStyle(
+              color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-        primaryColor: const Color(0xFF5db075),
-        textTheme: const TextTheme(
-          headline3: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-          headline4: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-          headline5: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        checkboxTheme: CheckboxThemeData(
-          fillColor: MaterialStateProperty.all(
-            const Color(0xFF5db075),
-          ),
-          side: const BorderSide(
-            color: Colors.grey,
-          ),
-        ),
-        inputDecorationTheme: const InputDecorationTheme(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 0.0),
-            borderRadius: BorderRadius.all(
-              Radius.elliptical(13, 13),
+          checkboxTheme: CheckboxThemeData(
+            fillColor: MaterialStateProperty.all(
+              const Color(0xFF5db075),
+            ),
+            side: const BorderSide(
+              color: Colors.grey,
             ),
           ),
-          labelStyle: TextStyle(color: Colors.grey),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.elliptical(13, 13),
+          inputDecorationTheme: const InputDecorationTheme(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey, width: 0.0),
+              borderRadius: BorderRadius.all(
+                Radius.elliptical(13, 13),
+              ),
+            ),
+            labelStyle: TextStyle(color: Colors.grey),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.elliptical(13, 13),
+              ),
             ),
           ),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            shape: const StadiumBorder(),
-            onPrimary: Colors.white,
-            fixedSize: const Size(100, 60),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              shape: const StadiumBorder(),
+              onPrimary: Colors.white,
+              fixedSize: const Size(100, 60),
+            ),
           ),
-        ),
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: createMaterialColor(
-            const Color(0xFF5db075),
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: createMaterialColor(
+              const Color(0xFF5db075),
+            ),
+            accentColor: const Color(0xFFff6e40),
           ),
-          accentColor: const Color(0xFFff6e40),
+          scaffoldBackgroundColor: Colors.white,
         ),
-        scaffoldBackgroundColor: Colors.white,
+        home: const App(title: 'Flutter Demo Home Page'),
       ),
-      home: const App(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -116,12 +129,6 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-      ),
-    );
   }
 
   @override

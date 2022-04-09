@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:lupin_app/after_login.dart';
-import 'package:lupin_app/signup.dart';
+import 'package:lupin_app/src/ui/1/after_login_page.dart';
+import 'package:lupin_app/src/ui/0/signup.dart';
 
 class LoginPage extends StatefulWidget {
   //const LoginPage({Key? key}) : super(key: key);
