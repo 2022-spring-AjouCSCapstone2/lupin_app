@@ -18,8 +18,12 @@ class AfterLogin extends StatefulWidget {
 class _AfterLoginState extends State<AfterLogin> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = const [TodayCourseListPage(), AllCourseListPage(), ProfilePage()];
-  DateTime? currentBackPressTime = null;
+  final List<Widget> _pages = const [
+    TodayCourseListPage(),
+    AllCourseListPage(),
+    ProfilePage()
+  ];
+  DateTime? currentBackPressTime;
 
   void _onItemTapped(int index) {
     setState(() {

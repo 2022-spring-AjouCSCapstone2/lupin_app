@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lupin_app/src/provider/app_state_provider.dart';
 import 'package:lupin_app/src/provider/course_provider.dart';
+import 'package:lupin_app/src/ui/2/course_main_page.dart';
+import 'package:lupin_app/src/uiutil/top_navigator.dart';
 import 'package:provider/provider.dart';
 
 class TodayCourseListPage extends StatefulWidget {
@@ -25,23 +28,10 @@ class _TodayCourseListPageState extends State<TodayCourseListPage> {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           children: [
             const SizedBox(height: 20),
-            Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.arrow_back_ios),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Text(
-                    "오늘 수업 목록",
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                )
-              ],
+            topNavigator(
+              context,
+              '오늘 수업 목록',
+              rightWidget: Container(),
             ),
             const SizedBox(height: 20),
             TextField(
@@ -78,6 +68,12 @@ class _TodayCourseListPageState extends State<TodayCourseListPage> {
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return ListTile(
+            onTap: () {
+              AppState.pushPage(
+                context,
+                CourseMainPage(title: courses[index].name),
+              );
+            },
             leading: Container(width: 50, color: Colors.grey),
             title: Row(
               children: [

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lupin_app/src/provider/app_state_provider.dart';
 import 'package:lupin_app/src/provider/course_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +43,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<CourseProvider>(
           create: (_) => CourseProvider(),
+        ),
+        ChangeNotifierProvider<AppState>(
+          create: (_) => AppState(),
         )
       ],
       child: MaterialApp(
@@ -129,6 +133,9 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.black,
+    ));
   }
 
   @override
