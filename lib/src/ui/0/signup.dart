@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:lupin_app/validate.dart';
+import 'package:lupin_app/src/validate.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
