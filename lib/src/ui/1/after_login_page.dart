@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lupin_app/src/ui/1/today_course_list_page.dart';
 import 'package:lupin_app/src/ui/1/profile_page.dart';
+import 'package:lupin_app/src/ui/1/today_course_list_page.dart';
 
 import 'all_course_list_page.dart';
 
@@ -58,8 +58,8 @@ class _AfterLoginState extends State<AfterLogin> {
             label: '메인',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '강의 목록',
+            icon: Icon(Icons.calendar_today),
+            label: '강의 시간표',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

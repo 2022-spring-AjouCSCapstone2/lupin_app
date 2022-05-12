@@ -24,7 +24,7 @@ class _AllCourseListPageState extends State<AllCourseListPage> {
           const SizedBox(height: 20),
           topNavigator(
             context,
-            "수업 목록",
+            "수업 시간표",
             leftWidget: Container(),
             rightWidget: Container(),
           ),

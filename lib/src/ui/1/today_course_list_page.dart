@@ -31,6 +31,7 @@ class _TodayCourseListPageState extends State<TodayCourseListPage> {
             topNavigator(
               context,
               '오늘 수업 목록',
+              leftWidget: Container(),
               rightWidget: Container(),
             ),
             const SizedBox(height: 20),
@@ -71,7 +72,7 @@ class _TodayCourseListPageState extends State<TodayCourseListPage> {
             onTap: () {
               AppState.pushPage(
                 context,
-                CourseMainPage(title: courses[index].name),
+                CourseMainPage(courses[index]),
               );
             },
             leading: Container(width: 50, color: Colors.grey),

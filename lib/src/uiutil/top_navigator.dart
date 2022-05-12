@@ -14,7 +14,9 @@ Stack topNavigator(
         alignment: Alignment.topLeft,
         child: leftWidget ??
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               icon: Icon(
                 Icons.arrow_back_ios,
                 color: themeColor,

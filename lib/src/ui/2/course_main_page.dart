@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lupin_app/src/model/course_model.dart';
+import 'package:lupin_app/src/ui/3/room.dart';
 import 'package:lupin_app/src/uiutil/top_navigator.dart';
 
 class CourseMainPage extends StatefulWidget {
-  final String title;
+  final Course course;
 
-  const CourseMainPage({Key? key, required this.title}) : super(key: key);
+  CourseMainPage(this.course, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CourseMainPageState();
@@ -14,9 +16,6 @@ class CourseMainPage extends StatefulWidget {
 class _CourseMainPageState extends State<CourseMainPage> {
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    print((size.width/10));
-    var a= (size.width/10);
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -28,40 +27,54 @@ class _CourseMainPageState extends State<CourseMainPage> {
             ),
             topNavigator(
               context,
-              widget.title,
-              rightWidget: Container(),
+              widget.course.name,
+              rightWidget: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Room(widget.course),
+                        ));
+                  },
+                  icon: Icon(Icons.airplay)),
             ),
-            const SizedBox(
+            SizedBox(
               height: 20,
             ),
             Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withAlpha(150),
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
               height: 300,
               width: 400,
-              color: Theme.of(context).primaryColor.withAlpha(150),
+              child: Column(),
             ),
             const SizedBox(
               height: 20,
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text('익명 질문하기'),
+            ListTile(
+              leading: Icon(Icons.notifications_on),
+              title: Text(
+                '공지사항',
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text('질문하기'),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.note),
+              title: Text(
+                '강의노트',
+                style: Theme.of(context).textTheme.titleMedium,
               ),
-            )
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.people),
+              title: Text(
+                '게시판',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
           ],
         ),
       ),
