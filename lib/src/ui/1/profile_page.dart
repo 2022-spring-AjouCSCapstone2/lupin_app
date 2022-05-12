@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 import '../../uiutil/top_navigator.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -11,6 +15,30 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+  var dio = Dio();
+  var cookieJar = CookieJar();
+
+  void cookie(Dio dio) {
+    dio.interceptors.add(CookieManager(cookieJar));
+  }
+
+  void postLogout() async {
+    cookie(dio);
+    try {
+      Response response = await dio.get('http://192.168.0.10:5000/users/logout');
+      print(response);
+      if(response.statusCode == 204){
+        //로그인 페이지로 이동
+      }
+      else {
+        //로그아웃 실패
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           rightWidget: TextButton(
-                            onPressed: () {},
+                            onPressed: () {postLogout();},
                             child: Text(
                               'Logout',
                               style: Theme.of(context)
