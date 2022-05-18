@@ -89,7 +89,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String _hash = 'Unknown';
 
   void socket() async {
-    IO.Socket socket = IO.io('http://200.200.15.231:5000', <String, dynamic>{
+    IO.Socket socket = IO.io('http://200.200.4.206:3000', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect':false,
     });
@@ -115,15 +115,16 @@ class _SignUpPageState extends State<SignUpPage> {
 
     socket.emit('showRoom', 'test1');
 
-    currentRoom = 90000005;
+    currentRoom = 90000001;
 
-    socket.emitWithAck('joinRoom', [currentRoom, 'test1'], ack : (participants, roomData){
-      print('check2');
-      print('[roomdata] ' + roomData);
+    socket.emitWithAck('joinRoom', {'roomId': currentRoom, 'name': 'test1'}, ack : (data){
+      print('joinRoom');
+      print(data);
+      // print('[roomdata] ' + roomData);
       currentRoom = currentRoom;
       currentRoomName = roomData;
-      currentRoomUsers = participants;
-      print('[participants] ' + participants);
+      // currentRoomUsers = participants;
+      // print('[participants] ' + participants);
       //paintUserList();
       //showRoom();
     });
