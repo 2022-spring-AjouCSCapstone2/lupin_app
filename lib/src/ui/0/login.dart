@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lupin_app/src/ui/1/after_login_page.dart';
 import 'package:lupin_app/src/ui/0/signup.dart';
+import 'package:lupin_app/src/apis.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 
@@ -18,25 +17,11 @@ class _LoginPageState extends State<LoginPage> {
   final _mailController = TextEditingController();
   final _pwController = TextEditingController();
 
-  var dio = Dio();
-  var cookieJar = CookieJar();
-
-  void cookie(Dio dio) {
-    dio.interceptors.add(CookieManager(cookieJar));
-  }
-
   void postLogin() async {
-    cookie(dio);
     try {
       var value = sha256.convert(utf8.encode(_pwController.text));
-      Response response = await dio.post(
-          'http://192.168.0.10:5000/users/login',
-          data: {
-            'email': _mailController.text,
-            'password': value.toString()
-          });
+      Response response = await Apis.instance.login(email: _mailController.text, password: value.toString());
       if(response.statusCode == 200) {
-        //dio를 같이 넘겨줘야함.. 세션 유지 때문에
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

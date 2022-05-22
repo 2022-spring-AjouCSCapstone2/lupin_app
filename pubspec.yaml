@@ -31,7 +31,6 @@ dependencies:
     sdk: flutter
   cookie_jar: ^3.0.1
   dio_cookie_manager: ^2.0.0
-  flutter_bcrypt: ^1.0.7
   crypto: ^3.0.2
 
 

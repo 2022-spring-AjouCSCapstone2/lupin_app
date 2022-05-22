@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lupin_app/src/apis.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:cookie_jar/cookie_jar.dart';
 import '../../uiutil/top_navigator.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -14,18 +13,9 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
-  var dio = Dio();
-  var cookieJar = CookieJar();
-
-  void cookie(Dio dio) {
-    dio.interceptors.add(CookieManager(cookieJar));
-  }
-
   void postLogout() async {
-    cookie(dio);
     try {
-      Response response = await dio.get('http://192.168.0.10:5000/users/logout');
-      print(response);
+      Response response = await Apis.instance.logout();
       if(response.statusCode == 204){
         //로그인 페이지로 이동
       }
