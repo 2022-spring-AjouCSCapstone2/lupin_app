@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lupin_app/src/ui/1/after_login_page.dart';
 import 'package:lupin_app/src/ui/0/signup.dart';
+import 'package:lupin_app/src/apis.dart';
+import 'package:dio/dio.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   //const LoginPage({Key? key}) : super(key: key);
@@ -10,8 +14,30 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _mailController = TextEditingController();
+  final _pwController = TextEditingController();
+
+  void postLogin() async {
+    try {
+      var value = sha256.convert(utf8.encode(_pwController.text));
+      Response response = await Apis.instance.login(email: _mailController.text, password: value.toString());
+      if(response.statusCode == 200) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AfterLogin(),
+          ),
+        );
+      }
+      else {
+        print(response);
+      }
+    } catch (e) {
+      print(e);
+      //로그인 에러 창 띄우기
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +67,12 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 40.0),
             TextField(
-              controller: _usernameController,
+              controller: _mailController,
               decoration: const InputDecoration(filled: true, labelText: '이메일'),
             ),
             const SizedBox(height: 12.0),
             TextField(
-              controller: _passwordController,
+              controller: _pwController,
               decoration:
                   const InputDecoration(filled: true, labelText: '비밀번호'),
               obscureText: true,
@@ -56,12 +82,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AfterLogin(),
-                  ),
-                );
+                postLogin();
               },
               child: const Text("로그인"),
             ),

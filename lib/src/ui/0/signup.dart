@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lupin_app/src/validate.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -14,9 +19,42 @@ class _SignUpPageState extends State<SignUpPage> {
   final _departController = TextEditingController();
   final _sIdController = TextEditingController();
 
+  //위젯에 학생인지 교수인지 선택하는 거 추가해야함
+
   bool? _isChecked = false;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  var dio = Dio();
+  var cookieJar = CookieJar();
+
+  void cookie(Dio dio) {
+    dio.interceptors.add(CookieManager(cookieJar));
+  }
+
+  void postJoin() async {
+    try {
+      var value = sha256.convert(utf8.encode(_pwController.text));
+      Response response = await dio.post(
+          'http://192.168.0.10:5000/users/join',
+          data: {
+            'name': _nameController.text,
+            'userType': 'student', //선택한 걸로 되게 수정
+            'userId': int.parse(_sIdController.text),
+            'email': _mailController.text,
+            'password': value.toString()
+          });
+      if(response.statusCode == 201) {
+        //login 페이지로 이동
+      }
+      else{
+        //에러 alert
+      }
+    } catch (e) {
+      //error 나면 에러 창 띄워주기
+      print(e);
+    }
+  }
 
   buttonEnable(){
     return _isChecked;
@@ -24,6 +62,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   buttonFunction(){
     formKey.currentState?.validate();
+    //validate가 성공일 때만
+    postJoin();
   }
 
   @override
