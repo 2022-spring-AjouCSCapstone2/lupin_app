@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lupin_app/src/model/course_model.dart';
+import 'package:lupin_app/src/provider/course_provider.dart';
 import 'package:lupin_app/src/uiutil/top_navigator.dart';
+import 'package:provider/provider.dart';
 
 class AllCourseListPage extends StatefulWidget {
   const AllCourseListPage({Key? key}) : super(key: key);
@@ -57,8 +60,17 @@ class _AllCourseListPageState extends State<AllCourseListPage> {
     );
   }
 
+  void calcDayCourse() {
+    var provider = Provider.of<CourseProvider>(context, listen: false);
+    List<Course> courses = [];
+    // for (var i in provider.userCourses!.courses) {
+    //   if (i.)
+    // }
+  }
+
   List<Widget> buildDayColumn(int index, {bool hasDivider = true}) {
     double width = MediaQuery.of(context).size.width;
+
     return [
       Expanded(
         flex: 4,
@@ -110,7 +122,7 @@ class _AllCourseListPageState extends State<AllCourseListPage> {
                 ),
                 ...List.generate(
                   kColumnLength,
-                  (index) {
+                      (index) {
                     if (index % 2 == 0) {
                       return const Divider(
                         color: Colors.grey,
@@ -145,7 +157,7 @@ class _AllCourseListPageState extends State<AllCourseListPage> {
           ),
           ...List.generate(
             kColumnLength,
-            (index) {
+                (index) {
               if (index % 2 == 0) {
                 return const Divider(
                   color: Colors.grey,
@@ -185,7 +197,7 @@ class _AllCourseListPageState extends State<AllCourseListPage> {
                   children: [
                     ...List.generate(
                       10,
-                      (index) {
+                          (index) {
                         if (index % 2 == 0) {
                           return const VerticalDivider(
                               color: Colors.black, width: 0);
@@ -226,7 +238,7 @@ class _AllCourseListPageState extends State<AllCourseListPage> {
               children: [
                 ...List.generate(
                   10,
-                  (index) {
+                      (index) {
                     if (index % 2 == 0) {
                       return const VerticalDivider(
                           color: Colors.black, width: 0);

@@ -8,10 +8,10 @@ class CourseProvider extends ChangeNotifier {
 
   CourseProvider();
 
-  Future<void> getUserCourses() async {
+  Future<MyCourses?> getUserAllCourses() async {
     MyCourses courses = await Apis.instance.getMyAllCourses();
     userCourses = courses;
-    return;
+    return userCourses;
   }
 
   Future<MyCourses?> getTodayCourses() async {

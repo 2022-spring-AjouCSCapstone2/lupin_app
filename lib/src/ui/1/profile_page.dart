@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/apis.dart';
+import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
+import 'package:provider/provider.dart';
 
 import '../../uiutil/top_navigator.dart';
 
@@ -34,6 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<UserInfoProvider>(context, listen: false);
     return SafeArea(
       child: ListView(
         children: [
@@ -85,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 80,
                   ),
                   Text(
-                    '김철수',
+                    provider.currentUser!.name,
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   const SizedBox(
@@ -95,6 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     '\'오늘도 힘내보자\'',
                     style: Theme.of(context).textTheme.headline6,
                   ),
+                  buildSettings(),
                 ],
               ),
               buildAvatar(),
@@ -115,6 +119,21 @@ class _ProfilePageState extends State<ProfilePage> {
           radius: 95,
           backgroundImage: NetworkImage('https://picsum.photos/id/237/200/300'),
         ),
+      ),
+    );
+  }
+
+  Padding buildSettings() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: Column(
+        children: [
+          ListTile(
+            title: Text('테스트'),
+            leading: Icon(Icons.account_circle),
+          ),
+          Divider(),
+        ],
       ),
     );
   }

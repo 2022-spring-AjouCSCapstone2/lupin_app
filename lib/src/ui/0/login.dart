@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200) {
         await Provider.of<CourseProvider>(context, listen: false)
-            .getUserCourses();
+            .getUserAllCourses();
         Provider.of<UserInfoProvider>(context, listen: false)
             .setCurrentUser(response);
         Navigator.pushReplacement(
