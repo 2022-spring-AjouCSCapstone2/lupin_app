@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/apis.dart';
-import 'package:dio/dio.dart';
+import 'package:lupin_app/src/ui/0/login.dart';
+
 import '../../uiutil/top_navigator.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -12,14 +14,17 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   void postLogout() async {
     try {
       Response response = await Apis.instance.logout();
-      if(response.statusCode == 204){
-        //로그인 페이지로 이동
-      }
-      else {
+      if (response.statusCode == 204) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ),
+        );
+      } else {
         //로그아웃 실패
       }
     } catch (e) {
@@ -61,7 +66,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           rightWidget: TextButton(
-                            onPressed: () {postLogout();},
+                            onPressed: () {
+                              postLogout();
+                            },
                             child: Text(
                               'Logout',
                               style: Theme.of(context)

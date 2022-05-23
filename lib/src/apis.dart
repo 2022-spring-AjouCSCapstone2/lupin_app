@@ -1,6 +1,7 @@
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:lupin_app/src/model/my_courses_model.dart';
 
 ///await Apis.instance.login(email: 'wdad', password: 'd'); 이렇게 사용하시면 됩니다
 class Apis {
@@ -42,12 +43,21 @@ class Apis {
     return response;
   }
 
-  Future<Response> getMyAllCourses() async {
+  Future<MyCourses> getMyAllCourses() async {
     Response response = await dio.get(
       '/courses/all',
     );
     print(response.headers);
     print(response.data);
-    return response;
+    return MyCourses.fromJson(response.data);
+  }
+
+  Future<MyCourses> getMyTodayCourses() async {
+    Response response = await dio.get(
+      '/courses/today',
+    );
+    print(response.headers);
+    print(response.data);
+    return MyCourses.fromJson(response.data);
   }
 }
