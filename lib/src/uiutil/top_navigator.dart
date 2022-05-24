@@ -7,6 +7,7 @@ Stack topNavigator(
   Color themeColor = Colors.black,
   Widget? leftWidget,
   Widget? rightWidget,
+  double? textSize,
 }) {
   return Stack(
     children: [
@@ -30,7 +31,7 @@ Stack topNavigator(
           style: Theme.of(context)
               .textTheme
               .headline4!
-              .copyWith(color: themeColor),
+              .copyWith(color: themeColor, fontSize: textSize),
         ),
       ),
       Align(

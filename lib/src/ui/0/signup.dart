@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:lupin_app/src/validate.dart';
-import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'dart:convert';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:crypto/crypto.dart';
-import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lupin_app/src/validate.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -85,35 +86,38 @@ class _SignUpPageState extends State<SignUpPage> {
                         icon: const Icon(Icons.arrow_back_ios),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "회원가입",
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 40),
-                TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                      filled: true,
-                      labelText: '이름'
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    "회원가입",
+                    style: Theme.of(context).textTheme.headline3,
                   ),
-                  validator: (value) => CheckValidate().validateName(value),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                )
+              ],
+            ),
+            const SizedBox(height: 40),
+            Row(
+              children: [
+                Container(
+                  child: Text('123123'),
                 ),
-                SizedBox(height: 12.0),
-                TextFormField(
-                  controller: _mailController,
-                  decoration: InputDecoration(
-                      filled: true,
-                      labelText: '이메일'
+                Expanded(
+                  child: TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(filled: true, labelText: '이름'),
+                    validator: (value) => CheckValidate().validateName(value),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
-                  validator: (value) => CheckValidate().validateEmail(value),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
+              ],
+            ),
+            SizedBox(height: 12.0),
+            TextFormField(
+              controller: _mailController,
+              decoration: InputDecoration(filled: true, labelText: '이메일'),
+              validator: (value) => CheckValidate().validateEmail(value),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+            ),
                 SizedBox(height: 12.0),
                 TextFormField(
                   controller: _pwController,
