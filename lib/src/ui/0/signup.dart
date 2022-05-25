@@ -221,8 +221,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       onPressed: buttonEnable() ? () => buttonFunction() : null,
                       child: Text("회원가입"),
                     ),
-                  ],
-                ),
+              ],
+            ),
           ),
         )
     );
