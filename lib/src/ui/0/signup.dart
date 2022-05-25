@@ -61,10 +61,10 @@ class _SignUpPageState extends State<SignUpPage> {
         );
       }
       else{
-        showToast('이미 가입된 학번입니다.');
+        showToast('이미 가입된 학번 또는 이메일입니다.');
       }
     } catch (e) {
-      showToast('이미 가입된 학번입니다.');
+      showToast('이미 가입된 학번 또는 이메일입니다.');
       print(e);
     }
   }
