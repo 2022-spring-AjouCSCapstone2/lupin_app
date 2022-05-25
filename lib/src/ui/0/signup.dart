@@ -171,56 +171,55 @@ class _SignUpPageState extends State<SignUpPage> {
                   validator: (value) => CheckValidate().validateEmail(value),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
-                    SizedBox(height: 12.0),
-                    TextFormField(
-                      controller: _pwController,
-                      decoration: InputDecoration(
-                          filled: true,
-                          labelText: '비밀번호 *',
-                          helperText: '특수문자, 대소문자, 숫자 포함 8자리 이상 15자 이내로 입력'
-                      ),
-                      validator: (value) => CheckValidate().validatePassword(value),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      obscureText: true,
-                    ),
-                    SizedBox(height: 12.0),
-                    TextFormField(
-                      controller: _phoneController,
-                      decoration: InputDecoration(
-                          filled: true,
-                          labelText: '전화번호'
-                      ),
-                      validator: (value) => CheckValidate().validatePhone(value),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                    ),
-                    SizedBox(height: 12.0),
-                    TextFormField(
-                      controller: _sIdController,
-                      decoration: InputDecoration(
-                          filled: true,
-                          labelText: '학번 *'
-                      ),
-                      validator: (value) => CheckValidate().validateSId(value),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                    ),
-                    const SizedBox(height: 12.0),
-                    CheckboxListTile(
-                        title: Text('개인정보 수집에 동의합니다.',style: TextStyle(color: Colors.grey)),
-                        value: _isChecked,
-                        controlAffinity: ListTileControlAffinity.leading,
-                        onChanged: (bool? value) {
-                          if(value != null){
-                            setState(() {
-                              _isChecked = value;
-                            });
-                          }
-                        }
-                    ),
-                    const SizedBox(height: 12.0),
-                    ElevatedButton(
-                      onPressed: buttonEnable() ? () => buttonFunction() : null,
-                      child: Text("회원가입"),
-                    ),
+                SizedBox(height: 12.0),
+                TextFormField(
+                  controller: _pwController,
+                  decoration: InputDecoration(
+                      filled: true,
+                      labelText: '비밀번호 *',
+                      helperText: '특수문자, 대소문자, 숫자 포함 8자리 이상 15자 이내로 입력'
+                  ),
+                  validator: (value) => CheckValidate().validatePassword(value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  obscureText: true,
+                ),
+                SizedBox(height: 12.0),
+                TextFormField(
+                  controller: _phoneController,
+                  decoration: InputDecoration(
+                      filled: true,
+                      labelText: '전화번호'
+                  ),
+                  validator: (value) => CheckValidate().validatePhone(value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                ),
+                SizedBox(height: 12.0),
+                TextFormField(
+                  controller: _sIdController,
+                  decoration: InputDecoration(
+                      filled: true,
+                      labelText: '학번 *'
+                  ),
+                  validator: (value) => CheckValidate().validateSId(value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                ),
+                const SizedBox(height: 12.0),
+                CheckboxListTile(
+                    title: Text('개인정보 수집에 동의합니다.',style: TextStyle(color: Colors.grey)),
+                    value: _isChecked,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (bool? value) {
+                      if(value != null){
+                        setState(() {
+                          _isChecked = value;
+                        });
+                      }
+                    }),
+                const SizedBox(height: 12.0),
+                ElevatedButton(
+                  onPressed: buttonEnable() ? () => buttonFunction() : null,
+                  child: Text("회원가입"),
+                ),
               ],
             ),
           ),
