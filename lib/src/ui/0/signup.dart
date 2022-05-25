@@ -120,7 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         controller: _nameController,
                         decoration: InputDecoration(
                             filled: true,
-                            labelText: '이름'
+                            labelText: '이름 *'
                         ),
                         validator: (value) => CheckValidate().validateName(value),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -134,7 +134,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             isDense: true,
                             contentPadding: EdgeInsets.only(left: 10),
                             filled: true,
-                            labelText: '사용자 유형',
+                            labelText: '사용자 유형 *',
                           ),
                           icon: const Icon(
                             Icons.arrow_drop_down,
@@ -167,7 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(height: 12.0),
                 TextFormField(
                   controller: _mailController,
-                  decoration: InputDecoration(filled: true, labelText: '이메일'),
+                  decoration: InputDecoration(filled: true, labelText: '이메일 *'),
                   validator: (value) => CheckValidate().validateEmail(value),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
@@ -176,7 +176,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       controller: _pwController,
                       decoration: InputDecoration(
                           filled: true,
-                          labelText: '비밀번호',
+                          labelText: '비밀번호 *',
                           helperText: '특수문자, 대소문자, 숫자 포함 8자리 이상 15자 이내로 입력'
                       ),
                       validator: (value) => CheckValidate().validatePassword(value),
@@ -198,7 +198,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       controller: _sIdController,
                       decoration: InputDecoration(
                           filled: true,
-                          labelText: '학번'
+                          labelText: '학번 *'
                       ),
                       validator: (value) => CheckValidate().validateSId(value),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
