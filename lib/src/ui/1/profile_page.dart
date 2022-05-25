@@ -6,6 +6,7 @@ import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:provider/provider.dart';
 
+
 import '../../uiutil/top_navigator.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -40,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: ListView(
         children: [
-          Stack(
+         Stack(
             alignment: Alignment.center,
             children: [
               Column(

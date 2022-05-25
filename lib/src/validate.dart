@@ -37,17 +37,27 @@ class CheckValidate {
     }
   }
 
-  String? validateDepart(String? value) {
+  String? validatePhone(String? value) {
+    /*
     if (value!.isEmpty){
       return '학과를 입력하세요.';
     } else {
       return null;
     }
+     */
   }
 
   String? validateSId(String? value) {
     if (value!.isEmpty){
       return '학번을 입력하세요.';
+    } else {
+      return null;
+    }
+  }
+
+  String? validateType(String? value){
+    if (value == 'null'){
+      return '사용자 타입을 선택하세요';
     } else {
       return null;
     }

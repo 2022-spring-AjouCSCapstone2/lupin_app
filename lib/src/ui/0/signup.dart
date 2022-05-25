@@ -1,12 +1,12 @@
-import 'dart:convert';
-
-import 'package:cookie_jar/cookie_jar.dart';
-import 'package:crypto/crypto.dart';
-import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:lupin_app/src/validate.dart';
+import 'package:lupin_app/src/ui/0/login.dart';
+import 'package:dio/dio.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -17,42 +17,54 @@ class _SignUpPageState extends State<SignUpPage> {
   final _nameController = TextEditingController();
   final _mailController = TextEditingController();
   final _pwController = TextEditingController();
-  final _departController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _sIdController = TextEditingController();
-
-  //위젯에 학생인지 교수인지 선택하는 거 추가해야함
+  
+  final _userType = ['STUDENT', 'PROFESSOR'];
+  String? _selectedValue;
 
   bool? _isChecked = false;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  var dio = Dio();
-  var cookieJar = CookieJar();
+  var dio = Dio()
+    ..options.connectTimeout = 5000
+    ..options.receiveTimeout = 3000;
 
-  void cookie(Dio dio) {
-    dio.interceptors.add(CookieManager(cookieJar));
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        backgroundColor: Colors.tealAccent,
+        textColor: Colors.black,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM);
   }
 
   void postJoin() async {
     try {
       var value = sha256.convert(utf8.encode(_pwController.text));
       Response response = await dio.post(
-          'http://192.168.0.10:5000/users/join',
+          'http://3.37.234.117:5000/users/join',
           data: {
             'name': _nameController.text,
-            'userType': 'student', //선택한 걸로 되게 수정
+            'userType': _selectedValue,
             'userId': int.parse(_sIdController.text),
             'email': _mailController.text,
             'password': value.toString()
           });
       if(response.statusCode == 201) {
-        //login 페이지로 이동
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginPage(),
+          ),
+        );
       }
       else{
-        //에러 alert
+        showToast('이미 가입된 학번입니다.');
       }
     } catch (e) {
-      //error 나면 에러 창 띄워주기
+      showToast('이미 가입된 학번입니다.');
       print(e);
     }
   }
@@ -62,9 +74,13 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   buttonFunction(){
-    formKey.currentState?.validate();
-    //validate가 성공일 때만
-    postJoin();
+    if(formKey.currentState!.validate()){
+      formKey.currentState!.save();
+      postJoin();
+    }
+    else {
+      print('validate err');
+    }
   }
 
   @override
@@ -86,20 +102,67 @@ class _SignUpPageState extends State<SignUpPage> {
                         icon: const Icon(Icons.arrow_back_ios),
                       ),
                     ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Text(
-                    "회원가입",
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 40),
-            Row(
-              children: [
-                Container(
-                  child: Text('123123'),
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        "회원가입",
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 40),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                            filled: true,
+                            labelText: '이름'
+                        ),
+                        validator: (value) => CheckValidate().validateName(value),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                      ),
+                    ),
+                    Container(width: 10,),
+                    Expanded(
+                      flex: 1,
+                        child: DropdownButtonFormField2(
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.only(left: 10),
+                            filled: true,
+                            labelText: '사용자 유형',
+                          ),
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.black45,
+                          ),
+                          iconSize: 30,
+                          buttonHeight: 60,
+                          buttonPadding: const EdgeInsets.only(right: 10),
+                          items: _userType.map((value) {
+                            return DropdownMenuItem(
+                              child: Container(
+                                  child: Text(value)
+                              ),
+                              value: value,);
+                          }).toList(),
+                          validator: (value) => CheckValidate().validateType(value.toString()),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          onChanged: (String? value){
+                            setState(() {
+                              _selectedValue = value!;
+                            });
+                          },
+                          onSaved: (value) {
+                            _selectedValue = value.toString();
+                          },
+                        ),
+                    ),
+                  ],
                 ),
                 Expanded(
                   child: TextFormField(
@@ -132,12 +195,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: 12.0),
                 TextFormField(
-                  controller: _departController,
+                  controller: _phoneController,
                   decoration: InputDecoration(
                       filled: true,
-                      labelText: '학과'
+                      labelText: '전화번호'
                   ),
-                  validator: (value) => CheckValidate().validateDepart(value),
+                  validator: (value) => CheckValidate().validatePhone(value),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
                 SizedBox(height: 12.0),
@@ -168,10 +231,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   onPressed: buttonEnable() ? () => buttonFunction() : null,
                   child: Text("회원가입"),
                 ),
-                TextButton(
-                  onPressed: (){},
-                  child: Text("비밀번호를 잊으셨나요?"),
-                )
               ],
             ),
           ),

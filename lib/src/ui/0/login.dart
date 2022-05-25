@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
@@ -12,7 +14,8 @@ import 'package:lupin_app/src/ui/1/after_login_page.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
-  //const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -21,7 +24,16 @@ class _LoginPageState extends State<LoginPage> {
   final _mailController = TextEditingController();
   final _pwController = TextEditingController();
 
-  void postLogin(BuildContext context) async {
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        backgroundColor: Colors.tealAccent,
+        textColor: Colors.black,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM);
+  }
+
+  void postLogin() async {
     try {
       var value = sha256.convert(utf8.encode(_pwController.text));
       Response response = await Apis.instance
@@ -38,12 +50,14 @@ class _LoginPageState extends State<LoginPage> {
             builder: (context) => const AfterLogin(),
           ),
         );
-      } else {
+
+      else {
+        showToast('잘못된 이메일 또는 패스워드입니다.');
         print(response);
       }
     } catch (e) {
+      showToast('잘못된 이메일 또는 패스워드입니다.');
       print(e);
-      //로그인 에러 창 띄우기
     }
   }
 
