@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
             builder: (context) => const AfterLogin(),
           ),
         );
-
+      }
       else {
         showToast('잘못된 이메일 또는 패스워드입니다.');
         print(response);
@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                postLogin(context);
+                postLogin();
               },
               child: const Text("로그인"),
             ),
