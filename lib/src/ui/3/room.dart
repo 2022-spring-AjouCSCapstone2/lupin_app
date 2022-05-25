@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:lupin_app/src/model/course_model.dart';
 import 'package:lupin_app/src/uiutil/top_navigator.dart';
 import 'package:record/record.dart';
+import 'dart:convert';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class Room extends StatefulWidget {
   final Course course;
@@ -11,6 +13,33 @@ class Room extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _RoomState();
+}
+
+class roomData {
+  String name = '';
+
+  roomData(String name){
+    this.name = name;
+  }
+
+  roomData.fromJson(Map<String, dynamic> json)
+      : name = json['name'];
+
+  Map<String, dynamic> toJson() =>
+      {
+        'name': name,
+      };
+}
+
+void socket(){
+  IO.Socket socket =
+  IO.io('http://3.37.234.117:5000', <String, dynamic>{
+    'transports': ['websocket'],
+    'autoConnect': false,
+  });
+  socket.connect();
+
+  print(socket.connected);
 }
 
 class _RoomState extends State<Room> {
@@ -79,7 +108,7 @@ class _RoomState extends State<Room> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {socket();},
                 child: const Text('익명 질문하기'),
               ),
             ),
