@@ -1,7 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lupin_app/after_login.dart';
+import 'package:lupin_app/src/provider/app_state_provider.dart';
+import 'package:lupin_app/src/provider/course_provider.dart';
+import 'package:lupin_app/src/provider/user_info_provider.dart';
+import 'package:lupin_app/src/ui/0/login.dart';
+import 'package:provider/provider.dart';
+
+import 'src/ui/0/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,66 +36,117 @@ class MyApp extends StatelessWidget {
     return MaterialColor(color.value, swatch);
   }
 
+  void initState() {}
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: createMaterialColor(
-            const Color(0xFF1E3D59),
-          ),
-          accentColor: const Color(0xFFff6e40),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<CourseProvider>(
+          create: (_) => CourseProvider(),
         ),
-        scaffoldBackgroundColor: const Color(0xFFF5F0E1),
+        ChangeNotifierProvider<AppState>(
+          create: (_) => AppState(),
+        ),
+        ChangeNotifierProvider<UserInfoProvider>(
+          create: (_) => UserInfoProvider(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          primaryColor: const Color(0xFF5db075),
+          textTheme: const TextTheme(
+            headline3: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+            headline4: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+            headline5: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+            headline6: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          checkboxTheme: CheckboxThemeData(
+            fillColor: MaterialStateProperty.all(
+              const Color(0xFF5db075),
+            ),
+            side: const BorderSide(
+              color: Colors.grey,
+            ),
+          ),
+          inputDecorationTheme: const InputDecorationTheme(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey, width: 0.0),
+              borderRadius: BorderRadius.all(
+                Radius.elliptical(13, 13),
+              ),
+            ),
+            labelStyle: TextStyle(color: Colors.grey),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.elliptical(13, 13),
+              ),
+            ),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              shape: const StadiumBorder(),
+              onPrimary: Colors.white,
+              fixedSize: const Size(100, 60),
+            ),
+          ),
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: createMaterialColor(
+              const Color(0xFF5db075),
+            ),
+            accentColor: const Color(0xFFff6e40),
+          ),
+          scaffoldBackgroundColor: Colors.white,
+        ),
+        home: const App(title: 'Flutter Demo Home Page'),
       ),
-      home: const LoginPage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, required this.title}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<App> createState() => _AppState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-      ),
-    );
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.black,
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const AfterLogin(),
-                  ),
-                );
-              },
-              child: const Text("로그인"),
-            ),
-          ],
-        ),
-      ),
+      body: LoginPage(),
     );
   }
 }
