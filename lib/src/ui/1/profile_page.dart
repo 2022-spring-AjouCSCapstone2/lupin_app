@@ -1,7 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/apis.dart';
-import 'package:dio/dio.dart';
+import 'package:lupin_app/src/provider/user_info_provider.dart';
+import 'package:lupin_app/src/ui/0/login.dart';
+import 'package:provider/provider.dart';
+
+
 import '../../uiutil/top_navigator.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -12,14 +17,17 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   void postLogout() async {
     try {
       Response response = await Apis.instance.logout();
-      if(response.statusCode == 204){
-        //로그인 페이지로 이동
-      }
-      else {
+      if (response.statusCode == 204) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ),
+        );
+      } else {
         //로그아웃 실패
       }
     } catch (e) {
@@ -29,10 +37,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<UserInfoProvider>(context, listen: false);
     return SafeArea(
       child: ListView(
         children: [
-          Stack(
+         Stack(
             alignment: Alignment.center,
             children: [
               Column(
@@ -61,7 +70,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           rightWidget: TextButton(
-                            onPressed: () {postLogout();},
+                            onPressed: () {
+                              postLogout();
+                            },
                             child: Text(
                               'Logout',
                               style: Theme.of(context)
@@ -78,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 80,
                   ),
                   Text(
-                    '김철수',
+                    provider.currentUser!.name,
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   const SizedBox(
@@ -88,6 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     '\'오늘도 힘내보자\'',
                     style: Theme.of(context).textTheme.headline6,
                   ),
+                  buildSettings(),
                 ],
               ),
               buildAvatar(),
@@ -108,6 +120,21 @@ class _ProfilePageState extends State<ProfilePage> {
           radius: 95,
           backgroundImage: NetworkImage('https://picsum.photos/id/237/200/300'),
         ),
+      ),
+    );
+  }
+
+  Padding buildSettings() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: Column(
+        children: [
+          ListTile(
+            title: Text('테스트'),
+            leading: Icon(Icons.account_circle),
+          ),
+          Divider(),
+        ],
       ),
     );
   }

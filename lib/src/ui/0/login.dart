@@ -1,14 +1,21 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:lupin_app/src/ui/1/after_login_page.dart';
-import 'package:lupin_app/src/ui/0/signup.dart';
-import 'package:lupin_app/src/apis.dart';
-import 'package:dio/dio.dart';
-import 'package:crypto/crypto.dart';
 import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:lupin_app/src/apis.dart';
+import 'package:lupin_app/src/provider/course_provider.dart';
+import 'package:lupin_app/src/provider/user_info_provider.dart';
+import 'package:lupin_app/src/ui/0/signup.dart';
+import 'package:lupin_app/src/ui/1/after_login_page.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
-  //const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -17,11 +24,26 @@ class _LoginPageState extends State<LoginPage> {
   final _mailController = TextEditingController();
   final _pwController = TextEditingController();
 
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        backgroundColor: Colors.tealAccent,
+        textColor: Colors.black,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM);
+  }
+
   void postLogin() async {
     try {
       var value = sha256.convert(utf8.encode(_pwController.text));
-      Response response = await Apis.instance.login(email: _mailController.text, password: value.toString());
-      if(response.statusCode == 200) {
+      Response response = await Apis.instance
+          .login(email: _mailController.text, password: value.toString());
+
+      if (response.statusCode == 200) {
+        await Provider.of<CourseProvider>(context, listen: false)
+            .getUserAllCourses();
+        Provider.of<UserInfoProvider>(context, listen: false)
+            .setCurrentUser(response);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -30,14 +52,14 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
       else {
+        showToast('잘못된 이메일 또는 패스워드입니다.');
         print(response);
       }
     } catch (e) {
+      showToast('잘못된 이메일 또는 패스워드입니다.');
       print(e);
-      //로그인 에러 창 띄우기
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

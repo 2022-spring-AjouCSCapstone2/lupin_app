@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lupin_app/src/provider/app_state_provider.dart';
 import 'package:lupin_app/src/provider/course_provider.dart';
+import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:provider/provider.dart';
 
@@ -46,9 +47,13 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<AppState>(
           create: (_) => AppState(),
+        ),
+        ChangeNotifierProvider<UserInfoProvider>(
+          create: (_) => UserInfoProvider(),
         )
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           textButtonTheme: TextButtonThemeData(
