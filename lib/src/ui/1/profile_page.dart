@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/apis.dart';
 import 'package:dio/dio.dart';
+import 'package:lupin_app/src/ui/0/login.dart';
+
 import '../../uiutil/top_navigator.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -16,10 +18,15 @@ class _ProfilePageState extends State<ProfilePage> {
   void postLogout() async {
     try {
       Response response = await Apis.instance.logout();
-      if(response.statusCode == 204){
-        //로그인 페이지로 이동
-      }
-      else {
+      if (response.statusCode == 204) {
+        print('check!!');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginPage(),
+          ),
+        );
+      } else {
         //로그아웃 실패
       }
     } catch (e) {
@@ -32,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: ListView(
         children: [
-          Stack(
+         Stack(
             alignment: Alignment.center,
             children: [
               Column(
