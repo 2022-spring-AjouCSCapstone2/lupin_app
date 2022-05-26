@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 
 import '../4/post_write.dart';
+import '../4/post_read.dart';
 
 class CourseMainPage extends StatefulWidget {
   final Course course;
@@ -73,6 +74,7 @@ class _CourseMainPageState extends State<CourseMainPage> {
                 '공지사항',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
+              /*
               onTap: () async {
                 Navigator.push(
                     context,
@@ -80,6 +82,7 @@ class _CourseMainPageState extends State<CourseMainPage> {
                       builder: (context) => Board(widget.course),
                     ));
               },
+               */
             ),
             Divider(),
             ListTile(
@@ -88,6 +91,13 @@ class _CourseMainPageState extends State<CourseMainPage> {
                 '강의노트',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostRead(widget.course),
+                    ));
+              },
             ),
             Divider(),
             ListTile(

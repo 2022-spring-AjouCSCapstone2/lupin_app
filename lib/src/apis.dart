@@ -73,7 +73,7 @@ class Apis {
   }
 
   Future<Response> getPost() async {
-    Response response = await dio.get('/posts/T004');
+    Response response = await dio.get('/posts/3');
     log.i(response.headers);
     log.i(response.data);
     return response;
