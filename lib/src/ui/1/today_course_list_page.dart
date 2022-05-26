@@ -142,77 +142,79 @@ class _TodayCourseListPageState extends State<TodayCourseListPage> {
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          return Column(children: [
-            Card(
-              child: ListTile(
-                onTap: () {
-                  AppState.pushPage(
-                    context,
-                    CourseMainPage(todayCourses.courses[index]),
-                  );
-                },
-                leading: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 10,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black,
+          return Column(
+            children: [
+              Card(
+                child: ListTile(
+                  onTap: () {
+                    AppState.pushPage(
+                      context,
+                      CourseMainPage(todayCourses.courses[index]),
+                    );
+                  },
+                  leading: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black,
+                        ),
                       ),
+                    ],
+                  ),
+                  title: Row(
+                    children: [
+                      Text(
+                        todayCourses.courses[index].name,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                  subtitle: Transform.translate(
+                    offset: const Offset(0, 5),
+                    child: Text(
+                      todayCourses.courses[index].professor.name,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
-                  ],
-                ),
-                title: Row(
-                  children: [
-                    Text(
-                      todayCourses.courses[index].name,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ],
-                ),
-                subtitle: Transform.translate(
-                  offset: const Offset(0, 5),
-                  child: Text(
-                    todayCourses.courses[index].professor.name,
+                  ),
+                  trailing: Text(
+                    '${todayCourses.courses[index].timeTables.first.startTime} ~ ${todayCourses.courses[index].timeTables.first.endTime}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
+                  isThreeLine: true,
+                  // return ListTile(
+                  //   onTap: () {
+                  //     AppState.pushPage(
+                  //       context,
+                  //       CourseMainPage(todayCourses.courses[index]),
+                  //     );
+                  //   },
+                  //   leading: Container(width: 50, color: Colors.grey),
+                  //   title: Row(
+                  //     children: [
+                  //       Text(
+                  //         todayCourses.courses[index].name,
+                  //         style: Theme.of(context).textTheme.titleMedium,
                 ),
-                trailing: Text(
-                  '${todayCourses.courses[index].timeTables.first.startTime} ~ ${todayCourses.courses[index].timeTables.first.endTime}',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                isThreeLine: true,
-                // return ListTile(
-                //   onTap: () {
-                //     AppState.pushPage(
-                //       context,
-                //       CourseMainPage(todayCourses.courses[index]),
-                //     );
-                //   },
-                //   leading: Container(width: 50, color: Colors.grey),
-                //   title: Row(
-                //     children: [
-                //       Text(
-                //         todayCourses.courses[index].name,
-                //         style: Theme.of(context).textTheme.titleMedium,
+                //   ],
+                // ),
+                // subtitle: Transform.translate(
+                //   offset: const Offset(0, 5),
+                //   child: Text(
+                //     '손태식 교수님',
+                //     style: Theme.of(context).textTheme.bodySmall,
+                //   ),
               ),
-              //   ],
+              // trailing: Text(
+              //   '10:30~12:00',
+              //   style: Theme.of(context).textTheme.bodySmall,
               // ),
-              // subtitle: Transform.translate(
-              //   offset: const Offset(0, 5),
-              //   child: Text(
-              //     '손태식 교수님',
-              //     style: Theme.of(context).textTheme.bodySmall,
-              //   ),
-            ),
-            // trailing: Text(
-            //   '10:30~12:00',
-            //   style: Theme.of(context).textTheme.bodySmall,
-            // ),
-            // isThreeLine: true,
-          ]);
+              // isThreeLine: true,
+            ],
+          );
         },
         separatorBuilder: (context, index) {
           // return const Divider(

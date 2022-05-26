@@ -57,7 +57,6 @@ class _AllCourseListPageState extends State<AllCourseListPage> {
               itemBuilder: (context, index) {
                 return Column(
                   children: [
-                    const SizedBox(height: 20),
                     Card(
                       child: ListTile(
                         onTap: () {
