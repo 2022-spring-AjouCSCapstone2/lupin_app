@@ -43,7 +43,7 @@ class _PostReadState extends State<PostRead> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          '글 쓰기',
+          '게시판',
         ),
       ),
       body: SafeArea(
