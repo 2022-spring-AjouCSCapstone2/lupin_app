@@ -74,7 +74,6 @@ class _CourseMainPageState extends State<CourseMainPage> {
                 '공지사항',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              /*
               onTap: () async {
                 Navigator.push(
                     context,
@@ -82,7 +81,6 @@ class _CourseMainPageState extends State<CourseMainPage> {
                       builder: (context) => Board(widget.course),
                     ));
               },
-               */
             ),
             Divider(),
             ListTile(
@@ -92,11 +90,7 @@ class _CourseMainPageState extends State<CourseMainPage> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PostRead(widget.course),
-                    ));
+
               },
             ),
             Divider(),

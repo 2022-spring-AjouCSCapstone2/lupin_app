@@ -4,15 +4,13 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/model/course_model.dart';
-import 'package:lupin_app/src/model/user_model.dart';
-import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:lupin_app/src/provider/post_provider.dart';
-import 'package:lupin_app/src/provider/app_state_provider.dart';
-import 'package:lupin_app/src/apis.dart';
-import 'package:dio/dio.dart';
+import 'package:lupin_app/src/ui/4/post_write.dart';
+import 'package:lupin_app/src/ui/4/post_read.dart';
 
 import '../../model/course_post_model.dart';
+import '../../provider/app_state_provider.dart';
 import '../../uiutil/top_navigator.dart';
 
 class Board extends StatefulWidget {
@@ -30,7 +28,7 @@ class _BoardState extends State<Board> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future:
-      Provider.of<PostProvider>(context, listen: false).getAllPosts(),
+        Provider.of<PostProvider>(context, listen: false).getAllPosts(widget.course.courseId),
       builder: (context, snapshot) {
         if (snapshot.hasData == false) {
           return const Center(
@@ -45,8 +43,6 @@ class _BoardState extends State<Board> {
         return Scaffold(
           body: SafeArea(
             child: Column(
-              // child: ListView(
-              //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
               children: [
                 Container(
                   child: ListView(
@@ -56,7 +52,7 @@ class _BoardState extends State<Board> {
                       const SizedBox(height: 20),
                       topNavigator(
                         context,
-                        '오늘 수업 목록',
+                        '게시판',
                         leftWidget: Container(),
                         rightWidget: Container(),
                       ),
@@ -90,6 +86,17 @@ class _BoardState extends State<Board> {
                     ),
                   ),
                 ),
+                TextButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Post(widget.course),
+                          ));
+                    },
+                    icon: Icon(Icons.mode_edit_outline_outlined),
+                    label: Text('글 쓰기'),
+                )
                 // const SizedBox(height: 30),
               ],
             ),
@@ -97,6 +104,7 @@ class _BoardState extends State<Board> {
         );
       },
     );
+
   }
 
   ListView buildCourseListView(PostProvider provider) {
@@ -110,21 +118,11 @@ class _BoardState extends State<Board> {
               Card(
                 child: ListTile(
                   onTap: () {
-
+                    AppState.pushPage(
+                      context,
+                      PostRead(coursePosts.posts[index]),
+                    );
                   },
-                  leading: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 10,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
                   title: Row(
                     children: [
                       Text(
@@ -138,10 +136,12 @@ class _BoardState extends State<Board> {
                     child: Text(
                       coursePosts.posts[index].content,
                       style: Theme.of(context).textTheme.bodySmall,
+                      maxLines:1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   trailing: Text(
-                    '${coursePosts.posts[index].id}',
+                    '${coursePosts.posts[index].createdAt.substring(2,10).replaceAll('-', '/')}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   isThreeLine: true,
@@ -151,10 +151,7 @@ class _BoardState extends State<Board> {
           );
         },
         separatorBuilder: (context, index) {
-          // return const Divider(
-          //   height: 0.0001,
-          //   color: Colors.grey,
-          // );
+
           return Container();
         },
         itemCount: coursePosts.posts.length);
