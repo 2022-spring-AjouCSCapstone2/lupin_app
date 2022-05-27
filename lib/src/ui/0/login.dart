@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
@@ -108,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                postLogin(context);
+                postLogin();
               },
               child: const Text("로그인"),
             ),

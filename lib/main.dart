@@ -106,6 +106,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             labelStyle: TextStyle(color: Colors.grey),
+            hintStyle: TextStyle(color: Colors.grey),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.elliptical(13, 13),

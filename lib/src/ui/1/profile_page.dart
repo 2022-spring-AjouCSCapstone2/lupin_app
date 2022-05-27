@@ -5,13 +5,9 @@ import 'package:lupin_app/src/apis.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:provider/provider.dart';
-
-
 import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:provider/provider.dart';
-
-import '../../uiutil/top_navigator.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
