@@ -16,8 +16,6 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
 
-  Logger log = Logger();
-
   final _nameController = TextEditingController();
   final _mailController = TextEditingController();
   final _pwController = TextEditingController();

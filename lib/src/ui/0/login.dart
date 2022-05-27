@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
         gravity: ToastGravity.BOTTOM);
   }
 
-  void postLogin(BuildContext context) async {
+  void postLogin() async {
     try {
       var value = sha256.convert(utf8.encode(_pwController.text));
       Response response = await Apis.instance

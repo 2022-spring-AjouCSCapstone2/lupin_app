@@ -104,7 +104,7 @@ class _CourseMainPageState extends State<CourseMainPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Post(widget.course),
+                      builder: (context) => Board(widget.course),
                     ));
               },
             ),
