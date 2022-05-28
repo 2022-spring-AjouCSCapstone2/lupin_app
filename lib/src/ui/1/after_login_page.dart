@@ -1,10 +1,14 @@
 import 'dart:async';
 
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lupin_app/src/apis.dart';
+import 'package:lupin_app/src/provider/socket_provider.dart';
 import 'package:lupin_app/src/ui/1/profile_page.dart';
 import 'package:lupin_app/src/ui/1/today_course_list_page.dart';
+import 'package:provider/provider.dart';
 
 import 'all_course_list_page.dart';
 

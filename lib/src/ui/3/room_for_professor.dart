@@ -1,24 +1,22 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/model/course_model.dart';
 import 'package:lupin_app/src/provider/socket_provider.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
-import 'package:lupin_app/src/ui/4/question.dart';
+import 'package:lupin_app/src/ui/4/quiz.dart';
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 
-class Room extends StatefulWidget {
+class RoomForProfessor extends StatefulWidget {
   final Course course;
 
-  const Room(this.course, {Key? key}) : super(key: key);
+  RoomForProfessor(this.course, {Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _RoomState();
+  State<StatefulWidget> createState() => _RoomForProfessorState();
 }
 
-class _RoomState extends State<Room> {
+class _RoomForProfessorState extends State<RoomForProfessor> {
   final record = Record();
   bool isRecording = false;
 
@@ -47,6 +45,7 @@ class _RoomState extends State<Room> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<UserInfoProvider>(context);
+    var socketProvider = Provider.of<SocketProvider>(context, listen: false);
     return WillPopScope(
       onWillPop: () {
         Provider.of<SocketProvider>(context, listen: false)
@@ -104,6 +103,15 @@ class _RoomState extends State<Room> {
               const SizedBox(
                 height: 20,
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    recordVoice();
+                  },
+                  child: Text(isRecording == false ? '녹음하기' : '녹음 중지'),
+                ),
+              ),
               const SizedBox(
                 height: 20,
               ),
@@ -114,22 +122,15 @@ class _RoomState extends State<Room> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Question(widget.course),
+                          builder: (context) => Quiz(widget.course),
                         ));
                   },
-                  child: const Text('익명 질문하기'),
+                  child: Text('퀴즈 내기'),
                 ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('질문하기'),
-                ),
-              )
             ],
           ),
         ),
