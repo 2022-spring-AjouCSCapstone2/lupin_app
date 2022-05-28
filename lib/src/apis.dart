@@ -133,6 +133,15 @@ class Apis {
     return response;
   }
 
+  Future<Response> getNote(courseId) async {
+    Response response = await dio.get(
+      '/courses/$courseId/logs',
+    );
+    log.i(response.headers);
+    log.i(response.data);
+    return response;
+  }
+
   Future<Response> patchPasswd({required password, required newPassword}) async {
     Response response = await dio.patch(
         '/users/password',

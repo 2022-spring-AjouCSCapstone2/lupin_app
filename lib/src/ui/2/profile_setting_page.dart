@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'package:lupin_app/src/apis.dart';
 
 class ProfileSettingPage extends StatefulWidget {
-  final User user;
+  final User? user;
 
   const ProfileSettingPage(this.user, {Key? key}) : super(key: key);
 
@@ -81,7 +81,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         phone: _phoneController.text,
       );
       if(response.statusCode == 200){
-        widget.user.phone = _phoneController.text;
+        widget.user?.phone = _phoneController.text;
         showToast('전화번호가 정상적으로 변경됐습니다.');
       }
     } catch(e){
@@ -91,7 +91,11 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    _phoneController.text = widget.user.phone!;
+    String? phone = '';
+    if(widget.user?.phone != null){
+      phone = widget.user?.phone;
+    }
+    _phoneController.text = phone!;
 
     return Scaffold(
         appBar: AppBar(

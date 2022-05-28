@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lupin_app/src/model/course_model.dart';
 import 'package:lupin_app/src/model/timetable_model.dart';
 import 'package:lupin_app/src/ui/1/after_login_page.dart';
+import 'package:lupin_app/src/ui/3/note.dart';
 import 'package:lupin_app/src/ui/3/room.dart';
 import 'package:lupin_app/src/ui/3/board.dart';
 import 'package:lupin_app/src/ui/3/notice.dart';
@@ -94,7 +95,11 @@ class _CourseMainPageState extends State<CourseMainPage> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               onTap: () {
-
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Note(widget.course),
+                    ));
               },
             ),
             Divider(),

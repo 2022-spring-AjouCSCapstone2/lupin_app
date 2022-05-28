@@ -41,7 +41,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {});
     var provider = Provider.of<UserInfoProvider>(context, listen: true);
     return SafeArea(
       child: ListView(
