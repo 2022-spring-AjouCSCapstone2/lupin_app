@@ -94,6 +94,7 @@ class SocketProvider extends ChangeNotifier {
   }
 
   void createRoom(BuildContext context, Course course) {
+    log.e(course);
     socket.emitWithAck('createRoom', {'courseId': course.courseId}, ack: (e) {
       log.i('방 생성 메시지 : $e');
       if (e != 'Forbidden') {
@@ -132,7 +133,7 @@ class SocketProvider extends ChangeNotifier {
   }
 
   void leaveRoom(Course course) {
-    socket.emitWithAck('leaveRoom', {'courseId': currentRoomId}, ack: (e) {
+    socket.emitWithAck('leaveRoom', {'roomId': currentRoomId}, ack: (e) {
       log.i('leaveRoom 메시지 : $e');
     });
   }
