@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
@@ -33,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
         gravity: ToastGravity.BOTTOM);
   }
 
-  void postLogin(BuildContext context) async {
+  void postLogin() async {
     try {
       var value = sha256.convert(utf8.encode(_pwController.text));
       Response response = await Apis.instance
@@ -105,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                postLogin(context);
+                postLogin();
               },
               child: const Text("로그인"),
             ),

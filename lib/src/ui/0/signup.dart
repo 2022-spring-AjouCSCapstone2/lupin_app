@@ -8,18 +8,21 @@ import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
+
 class SignUpPage extends StatefulWidget {
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+
   final _nameController = TextEditingController();
   final _mailController = TextEditingController();
   final _pwController = TextEditingController();
+  final _pw2Controller = TextEditingController();
   final _phoneController = TextEditingController();
   final _sIdController = TextEditingController();
-  
+
   final _userType = ['STUDENT', 'PROFESSOR'];
   String? _selectedValue;
 
@@ -50,7 +53,8 @@ class _SignUpPageState extends State<SignUpPage> {
             'userType': _selectedValue,
             'userId': int.parse(_sIdController.text),
             'email': _mailController.text,
-            'password': value.toString()
+            'password': value.toString(),
+            'meta' : jsonEncode({'phone' : _phoneController.text}),
           });
       if(response.statusCode == 201) {
         Navigator.pushReplacement(
@@ -98,7 +102,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ),
+                          );
+                        },
                         icon: const Icon(Icons.arrow_back_ios),
                       ),
                     ),
@@ -175,11 +186,22 @@ class _SignUpPageState extends State<SignUpPage> {
                 TextFormField(
                   controller: _pwController,
                   decoration: InputDecoration(
-                      filled: true,
-                      labelText: '비밀번호 *',
-                      helperText: '특수문자, 대소문자, 숫자 포함 8자리 이상 15자 이내로 입력'
+                    filled: true,
+                    labelText: '비밀번호 *',
+                    hintText: '특수문자, 대소문자, 숫자 포함 8 ~ 15자',
                   ),
                   validator: (value) => CheckValidate().validatePassword(value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  obscureText: true,
+                ),
+                SizedBox(height: 12.0),
+                TextFormField(
+                  controller: _pw2Controller,
+                  decoration: InputDecoration(
+                      filled: true,
+                      labelText: '비밀번호 확인 *'
+                  ),
+                  validator: (value) => CheckValidate().validatePassword2(_pwController.text, value),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   obscureText: true,
                 ),
@@ -198,23 +220,40 @@ class _SignUpPageState extends State<SignUpPage> {
                   controller: _sIdController,
                   decoration: InputDecoration(
                       filled: true,
-                      labelText: '학번 *'
+                      labelText: '학번/교번 *'
                   ),
                   validator: (value) => CheckValidate().validateSId(value),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
                 const SizedBox(height: 12.0),
-                CheckboxListTile(
-                    title: Text('개인정보 수집에 동의합니다.',style: TextStyle(color: Colors.grey)),
-                    value: _isChecked,
-                    controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (bool? value) {
-                      if(value != null){
-                        setState(() {
-                          _isChecked = value;
-                        });
-                      }
-                    }),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: CheckboxListTile(
+                          title: Text('개인정보 수집 및 이용 동의',style: TextStyle(color: Colors.grey)),
+                          value: _isChecked,
+                          controlAffinity: ListTileControlAffinity.leading,
+                          onChanged: (bool? value) {
+                            if(value != null){
+                              setState(() {
+                                _isChecked = value;
+                              });
+                            }
+                          }),
+                    ),
+                    Container(width: 10,),
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        onPressed: () {
+                          //약관 보여주기
+                        },
+                        icon: const Icon(Icons.chevron_right_outlined), color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 12.0),
                 ElevatedButton(
                   onPressed: buttonEnable() ? () => buttonFunction() : null,

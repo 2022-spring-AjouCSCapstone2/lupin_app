@@ -14,7 +14,7 @@ class CheckValidate {
     if (value!.isEmpty) {
       return '이메일을 입력하세요.';
     } else {
-      RegExp regExp = new RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+      RegExp regExp = new RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*))@((([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
       if (!regExp.hasMatch(value)) {
         return '잘못된 이메일 형식입니다.';
       } else {
@@ -35,6 +35,17 @@ class CheckValidate {
         return null;
       }
     }
+  }
+
+  String? validatePassword2(String? value1, String? value2){
+    if(value2!.isEmpty) {
+      return '비밀번호를 입력하세요.';
+    } else if(value1 != value2){
+      return '비밀번호가 일치하지 않습니다.';
+    } else {
+      return null;
+    }
+
   }
 
   String? validatePhone(String? value) {

@@ -5,6 +5,7 @@ import 'package:lupin_app/src/provider/app_state_provider.dart';
 import 'package:lupin_app/src/provider/course_provider.dart';
 import 'package:lupin_app/src/provider/socket_provider.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
+import 'package:lupin_app/src/provider/post_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:provider/provider.dart';
 
@@ -54,6 +55,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<UserInfoProvider>(
           create: (_) => UserInfoProvider(),
+        ),
+        ChangeNotifierProvider<PostProvider>(
+          create: (_) => PostProvider(),
         )
       ],
       child: MaterialApp(
@@ -102,6 +106,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             labelStyle: TextStyle(color: Colors.grey),
+            hintStyle: TextStyle(color: Colors.grey),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.elliptical(13, 13),

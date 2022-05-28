@@ -8,6 +8,8 @@ import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/4/question.dart';
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
+import 'dart:convert';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class Room extends StatefulWidget {
   final Course course;
@@ -16,6 +18,33 @@ class Room extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _RoomState();
+}
+
+class roomData {
+  String name = '';
+
+  roomData(String name){
+    this.name = name;
+  }
+
+  roomData.fromJson(Map<String, dynamic> json)
+      : name = json['name'];
+
+  Map<String, dynamic> toJson() =>
+      {
+        'name': name,
+      };
+}
+
+void socket(){
+  IO.Socket socket =
+  IO.io('http://3.37.234.117:5000', <String, dynamic>{
+    'transports': ['websocket'],
+    'autoConnect': false,
+  });
+  socket.connect();
+
+  print(socket.connected);
 }
 
 class _RoomState extends State<Room> {
