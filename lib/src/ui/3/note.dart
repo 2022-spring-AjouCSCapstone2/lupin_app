@@ -31,17 +31,6 @@ class Note extends StatefulWidget {
   State<StatefulWidget> createState() => _NoteState();
 }
 
-void getNote (courseId, DateTime date) async {
-  //var day = DateFormat('YYYYMMdd').format(date);
-  try{
-    //Response response = await Apis.instance.getNote(courseId, '20220528');
-  } catch(e){
-
-  }
-}
-
-
-
 class _NoteState extends State<Note> {
   List<DateTime> dates = [];
 
@@ -174,7 +163,7 @@ class _NoteState extends State<Note> {
     dates = dates.reversed.toList();
     print(count);
     print(dates);
-
+    
     return ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
