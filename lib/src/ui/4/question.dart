@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/model/course_model.dart';
+import 'package:lupin_app/src/provider/socket_provider.dart';
+import 'package:provider/provider.dart';
 
 class Question extends StatefulWidget {
   final Course course;
+  final bool isAnonymous;
 
-  const Question(this.course, {Key? key}) : super(key: key);
+  const Question(this.course, this.isAnonymous, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _QuestionState();
@@ -55,7 +58,12 @@ class _QuestionState extends State<Question> {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<SocketProvider>(context, listen: false)
+                        .question(widget.course, textEditingController.text,
+                            widget.isAnonymous);
+                    Navigator.pop(context);
+                  },
                   child: Text('보내기'),
                 ),
               ),
