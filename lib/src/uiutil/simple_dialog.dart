@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lupin_app/src/model/quiz_model.dart';
+import 'package:lupin_app/src/provider/socket_provider.dart';
+import 'package:provider/provider.dart';
 
-Future showSimpleDialog(
-    BuildContext context, String title, String subTitle, List<String> content,
+Future showSimpleDialog(BuildContext context, String title, String subTitle,
+    List<QuizModel> content, int quizId,
     {String? buttonText}) async {
   var groupValue;
   return await showDialog(
@@ -48,7 +51,7 @@ Future showSimpleDialog(
                     children: [
                       Expanded(
                         child: ListTile(
-                          title: Text('123'),
+                          title: Text(content[index].content),
                           onTap: () {},
                         ),
                       ),
@@ -79,6 +82,9 @@ Future showSimpleDialog(
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    var provider =
+                        Provider.of<SocketProvider>(context, listen: false);
+                    provider.answer(quizId, groupValue);
                   },
                   child: Text(buttonText ??= '확인'),
                 ),
@@ -87,6 +93,6 @@ Future showSimpleDialog(
           ),
         ),
       ),
-        ),
+    ),
   );
 }

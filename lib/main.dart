@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lupin_app/src/navigation_service.dart';
 import 'package:lupin_app/src/provider/app_state_provider.dart';
 import 'package:lupin_app/src/provider/course_provider.dart';
+import 'package:lupin_app/src/provider/post_provider.dart';
 import 'package:lupin_app/src/provider/socket_provider.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
-import 'package:lupin_app/src/provider/post_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:provider/provider.dart';
 
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        navigatorKey: NavigationService.navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
