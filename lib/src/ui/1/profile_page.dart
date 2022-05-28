@@ -68,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               AppState.pushPage(
                                 context,
-                                ProfileSettingPage(provider.currentUser!),
+                                ProfileSettingPage(provider),
                               );
                             },
                             child: Text(

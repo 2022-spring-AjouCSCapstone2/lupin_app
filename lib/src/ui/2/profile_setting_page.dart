@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lupin_app/src/model/user_model.dart';
+import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/validate.dart';
 import 'package:dio/dio.dart';
 import 'package:crypto/crypto.dart';
@@ -9,9 +10,9 @@ import 'dart:convert';
 import 'package:lupin_app/src/apis.dart';
 
 class ProfileSettingPage extends StatefulWidget {
-  final User? user;
+  final UserInfoProvider? provider;
 
-  const ProfileSettingPage(this.user, {Key? key}) : super(key: key);
+  const ProfileSettingPage(this.provider, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ProfileSettingPageState();
@@ -81,7 +82,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         phone: _phoneController.text,
       );
       if(response.statusCode == 200){
-        widget.user?.phone = _phoneController.text;
+        widget.provider!.currentUser?.phone = _phoneController.text;
         showToast('전화번호가 정상적으로 변경됐습니다.');
       }
     } catch(e){
@@ -92,8 +93,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   @override
   Widget build(BuildContext context) {
     String? phone = '';
-    if(widget.user?.phone != null){
-      phone = widget.user?.phone;
+    if(widget.provider!.currentUser?.phone != null){
+      phone = widget.provider!.currentUser?.phone;
     }
     _phoneController.text = phone!;
 

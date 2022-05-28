@@ -4,6 +4,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:lupin_app/src/model/my_courses_model.dart';
 import 'package:lupin_app/src/model/course_post_model.dart';
 import 'package:lupin_app/src/model/post_detail_model.dart';
+import 'package:lupin_app/src/model/course_note_model.dart';
 import 'model/post_model.dart';
 import 'package:logger/logger.dart';
 
@@ -133,13 +134,13 @@ class Apis {
     return response;
   }
 
-  Future<Response> getNote(courseId) async {
+  Future<Notes> getNote(courseId, day) async {
     Response response = await dio.get(
-      '/courses/$courseId/logs',
+      '/courses/$courseId/logs?day=$day',
     );
     log.i(response.headers);
     log.i(response.data);
-    return response;
+    return Notes.fromJson(response.data);
   }
 
   Future<Response> patchPasswd({required password, required newPassword}) async {

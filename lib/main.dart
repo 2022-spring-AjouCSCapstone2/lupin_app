@@ -7,6 +7,7 @@ import 'package:lupin_app/src/provider/course_provider.dart';
 import 'package:lupin_app/src/provider/post_provider.dart';
 import 'package:lupin_app/src/provider/socket_provider.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
+import 'package:lupin_app/src/provider/note_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:provider/provider.dart';
 
@@ -59,7 +60,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<PostProvider>(
           create: (_) => PostProvider(),
-        )
+        ),
+        ChangeNotifierProvider<NoteProvider>(
+          create: (_) => NoteProvider(),
+        ),
       ],
       child: MaterialApp(
         navigatorKey: NavigationService.navigatorKey,
