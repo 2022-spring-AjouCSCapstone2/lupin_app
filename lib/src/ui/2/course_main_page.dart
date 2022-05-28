@@ -2,6 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/model/course_model.dart';
 import 'package:lupin_app/src/model/timetable_model.dart';
+import 'package:lupin_app/src/model/user_model.dart';
+import 'package:lupin_app/src/provider/socket_provider.dart';
+import 'package:lupin_app/src/provider/user_info_provider.dart';
+import 'package:lupin_app/src/uiutil/simple_dialog.dart';
+import 'package:provider/provider.dart';
 import 'package:lupin_app/src/ui/1/after_login_page.dart';
 import 'package:lupin_app/src/ui/3/room.dart';
 import 'package:lupin_app/src/ui/3/board.dart';
@@ -30,11 +35,16 @@ class _CourseMainPageState extends State<CourseMainPage> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Room(widget.course),
-                    ));
+                var userProvider =
+                    Provider.of<UserInfoProvider>(context, listen: false);
+                var socketProvider =
+                    Provider.of<SocketProvider>(context, listen: false);
+                if (userProvider.currentUser?.userType == UserType.professor) {
+                  socketProvider.createRoom(context, widget.course);
+                } else {
+                  showSimpleDialog(context, '퀴즈 도착!', 'asdf', ['content', '']);
+                  // socketProvider.joinRoom(context, widget.course);
+                }
               },
               icon: Icon(Icons.airplay)),
         ],
