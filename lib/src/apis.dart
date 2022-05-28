@@ -28,6 +28,7 @@ class Apis {
     ..options.connectTimeout = 5000
     ..options.receiveTimeout = 3000;
 
+
   Future<Response> login({required email, required password}) async {
     Response response = await dio.post(
       '/users/login',
@@ -125,6 +126,31 @@ class Apis {
           'title': title,
           'content': content,
           'courseId': courseId,
+        }
+    );
+    log.i(response.headers);
+    log.i(response.data);
+    return response;
+  }
+
+  Future<Response> patchPasswd({required password, required newPassword}) async {
+    Response response = await dio.patch(
+        '/users/password',
+        data: {
+        'password': password,
+        'newPassword': newPassword,
+      }
+    );
+    log.i(response.headers);
+    log.i(response.data);
+    return response;
+  }
+
+  Future<Response> patchPhone({required phone}) async {
+    Response response = await dio.patch(
+        '/users',
+        data: {
+          'phone': phone,
         }
     );
     log.i(response.headers);
