@@ -10,4 +10,8 @@ class QuizModel {
       'content': content,
     };
   }
+
+  factory QuizModel.fromJson(Map<String, dynamic> json) {
+    return QuizModel(json['no'], json['content']);
+  }
 }
