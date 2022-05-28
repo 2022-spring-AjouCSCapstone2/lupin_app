@@ -2,7 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/model/course_model.dart';
 import 'package:lupin_app/src/model/timetable_model.dart';
+import 'package:lupin_app/src/ui/1/after_login_page.dart';
 import 'package:lupin_app/src/ui/3/room.dart';
+import 'package:lupin_app/src/ui/3/board.dart';
+import 'package:lupin_app/src/provider/post_provider.dart';
+import 'package:lupin_app/src/provider/user_info_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:dio/dio.dart';
+
+import '../4/post_write.dart';
+import '../4/post_read.dart';
 
 class CourseMainPage extends StatefulWidget {
   final Course course;
@@ -43,20 +52,6 @@ class _CourseMainPageState extends State<CourseMainPage> {
             const SizedBox(
               height: 20,
             ),
-            // topNavigator(
-            //   context,
-            //   widget.course.name,
-            //   textSize: 24,
-            //   rightWidget: IconButton(
-            //       onPressed: () {
-            //         Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //               builder: (context) => Room(widget.course),
-            //             ));
-            //       },
-            //       icon: Icon(Icons.airplay)),
-            // ),
             SizedBox(
               height: 20,
             ),
@@ -79,6 +74,13 @@ class _CourseMainPageState extends State<CourseMainPage> {
                 '공지사항',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
+              onTap: () async {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Board(widget.course),
+                    ));
+              },
             ),
             Divider(),
             ListTile(
@@ -87,6 +89,9 @@ class _CourseMainPageState extends State<CourseMainPage> {
                 '강의노트',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
+              onTap: () {
+
+              },
             ),
             Divider(),
             ListTile(
@@ -95,6 +100,13 @@ class _CourseMainPageState extends State<CourseMainPage> {
                 '게시판',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Board(widget.course),
+                    ));
+              },
             ),
           ],
         ),
