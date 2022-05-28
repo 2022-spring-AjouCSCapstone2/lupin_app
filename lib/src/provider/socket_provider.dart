@@ -94,23 +94,37 @@ class SocketProvider extends ChangeNotifier {
   }
 
   void createRoom(BuildContext context, Course course) {
-    log.e(course);
-    socket.emitWithAck('createRoom', {'courseId': course.courseId}, ack: (e) {
-      log.i('방 생성 메시지 : $e');
-      if (e != 'Forbidden') {
-        currentRoomId = e.toString();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RoomForProfessor(course),
-            ));
-      }
-    });
+    socket.emitWithAck(
+      'createRoom',
+      {'courseId': course.courseId},
+      ack: (e) {
+        if (e['status'] == 'success') {
+          e = e['data'];
+        } else {
+          return;
+        }
+        log.i('방 생성 메시지 : $e');
+        if (e != 'Forbidden') {
+          currentRoomId = e.toString();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RoomForProfessor(course),
+              ));
+        }
+      },
+    );
   }
 
   void joinRoom(BuildContext context, Course course) {
     socket.emitWithAck('joinRoom', {'courseId': course.courseId}, ack: (e) {
       log.i('방 참가 메시지 : $e');
+      if (e['status'] == 'success') {
+        e = e['data'];
+      } else {
+        Fluttertoast.showToast(msg: e['data']);
+        return;
+      }
       if (e != 'no course session opened') {
         currentRoomId = e.toString();
         Navigator.push(
@@ -135,6 +149,11 @@ class SocketProvider extends ChangeNotifier {
   void leaveRoom(Course course) {
     socket.emitWithAck('leaveRoom', {'roomId': currentRoomId}, ack: (e) {
       log.i('leaveRoom 메시지 : $e');
+      if (e['status'] == 'success') {
+        e = e['data'];
+      } else {
+        return;
+      }
     });
   }
 
@@ -149,11 +168,19 @@ class SocketProvider extends ChangeNotifier {
       },
       ack: (e) {
         log.i('quiz 메시지 : $e');
+        if (e['status'] == 'success') {
+          e = e['data'];
+        } else {
+          return;
+        }
       },
     );
   }
 
   void answer(int quizId, int answer) {
-    socket.emit('quizAnswer', {'quizId': quizId, 'answer': answer});
+    socket.emitWithAck('quizAnswer', {'quizId': quizId, 'answer': answer},
+        ack: (e) {
+      log.i('답변 메시지 :$e');
+    });
   }
 }
