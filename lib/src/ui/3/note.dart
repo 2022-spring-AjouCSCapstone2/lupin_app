@@ -1,26 +1,13 @@
 
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:lupin_app/src/model/course_model.dart';
 import 'package:lupin_app/src/model/timetable_model.dart';
-import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/4/note_detail.dart';
-import 'package:provider/provider.dart';
-import 'package:lupin_app/src/provider/post_provider.dart';
-import 'package:lupin_app/src/ui/4/post_write.dart';
-import 'package:lupin_app/src/ui/4/post_read.dart';
-import 'package:lupin_app/src/ui/4/notice_write.dart';
-import 'package:lupin_app/src/ui/4/notice_read.dart';
-import 'package:lupin_app/src/model/user_model.dart';
-import '../../model/course_post_model.dart';
-import '../../provider/app_state_provider.dart';
+
 import '../../uiutil/top_navigator.dart';
-import 'package:lupin_app/src/apis.dart';
-import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
 
 class Note extends StatefulWidget {
   final Course course;
@@ -108,47 +95,31 @@ class _NoteState extends State<Note> {
         else {
           return Scaffold(
             body: SafeArea(
-              child: Column(
+              child: ListView(
+                // padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                shrinkWrap: true,
                 children: [
+                  const SizedBox(height: 20),
+                  topNavigator(
+                    context,
+                    '강의노트',
+                    leftWidget: Container(),
+                    rightWidget: Container(),
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: Text(
+                      '질문도 하고 퀴즈도 풀고~ 아자아자 오늘도 힘내자!',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Container(
-                    child: ListView(
-                      // padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      shrinkWrap: true,
-                      children: [
-                        const SizedBox(height: 20),
-                        topNavigator(
-                          context,
-                          '강의노트',
-                          leftWidget: Container(),
-                          rightWidget: Container(),
-                        ),
-                        const SizedBox(height: 20),
-                        Center(
-                          child: Text(
-                            '질문도 하고 퀴즈도 풀고~ 아자아자 오늘도 힘내자!',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                          ),
-                        ),
-                        Container(
-                          child: buildCourseListView(widget.course.courseId),
-                        ),
-                      ],
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                      ),
-                    ),
-                  ),
-                  // const SizedBox(height: 30),
+                  buildCourseListView(widget.course.courseId),
                 ],
               ),
             ),
@@ -200,9 +171,8 @@ class _NoteState extends State<Note> {
         },
         separatorBuilder: (context, index) {
           return Container();
-          },
-        itemCount: 5
-      );
-    }
+        },
+        itemCount: count);
+  }
 }
 
