@@ -54,7 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
             'userId': int.parse(_sIdController.text),
             'email': _mailController.text,
             'password': value.toString(),
-            'meta' : jsonEncode({'phone' : _phoneController.text}),
+            'phone': _phoneController.text,
           });
       if(response.statusCode == 201) {
         Navigator.pushReplacement(

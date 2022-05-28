@@ -74,4 +74,12 @@ class CheckValidate {
     }
   }
 
+  String? validatePassword3(String? value) {
+    if (value!.isEmpty){
+      return '비밀번호를 입력하세요.';
+    } else {
+      return null;
+    }
+  }
+
 }
