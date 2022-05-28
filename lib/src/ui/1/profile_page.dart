@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/apis.dart';
+import 'package:lupin_app/src/model/user_model.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:lupin_app/src/uiutil/top_navigator.dart';
@@ -94,13 +95,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
-                  Text(
-                    '\'오늘도 힘내보자\'',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  buildSettings(),
+                  buildSettings(provider),
                 ],
               ),
               buildAvatar(),
@@ -125,16 +122,40 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Padding buildSettings() {
+  Padding buildSettings(UserInfoProvider provider) {
+    String? phone = '';
+    if(provider.currentUser?.phone != null){
+      phone = provider.currentUser?.phone!;
+    }
+    String userType = '';
+    if(provider.currentUser?.userType == UserType.student){
+      userType = '학번';
+    }
+    else if(provider.currentUser?.userType == UserType.professor){
+      userType = '교번';
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
         children: [
           ListTile(
-            title: Text('테스트'),
+            title: Text(userType),
+            subtitle: Text(provider.currentUser!.userId.toString()),
             leading: Icon(Icons.account_circle),
           ),
           Divider(),
+          ListTile(
+            title: Text('이메일'),
+            subtitle: Text(provider.currentUser!.email),
+            leading: Icon(Icons.mail),
+          ),
+          Divider(),
+          ListTile(
+            title: Text('전화번호'),
+            subtitle: Text(phone!),
+            leading: Icon(Icons.local_phone_rounded),
+          ),
         ],
       ),
     );

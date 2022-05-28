@@ -1,91 +1,17 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:lupin_app/src/validate.dart';
-import 'package:lupin_app/src/ui/0/login.dart';
-import 'package:dio/dio.dart';
-import 'package:crypto/crypto.dart';
-import 'dart:convert';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/widgets.dart';
+import 'package:lupin_app/src/ui/1/profile_page.dart';
 
+class ProfileSettingPage extends StatefulWidget {
+  const ProfileSettingPage({Key? key}) : super(key: key);
 
-class SignUpPage extends StatefulWidget {
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  State<StatefulWidget> createState() => _ProfileSettingPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-
-  final _nameController = TextEditingController();
-  final _mailController = TextEditingController();
-  final _pwController = TextEditingController();
-  final _pw2Controller = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _sIdController = TextEditingController();
-
-  final _userType = ['STUDENT', 'PROFESSOR'];
-  String? _selectedValue;
-
-  bool? _isChecked = false;
-
+class _ProfileSettingPageState extends State<ProfileSettingPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  var dio = Dio()
-    ..options.connectTimeout = 5000
-    ..options.receiveTimeout = 3000;
-
-  void showToast(String message) {
-    Fluttertoast.showToast(
-        msg: message,
-        backgroundColor: Colors.tealAccent,
-        textColor: Colors.black,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM);
-  }
-
-  void postJoin() async {
-    try {
-      var value = sha256.convert(utf8.encode(_pwController.text));
-      Response response = await dio.post(
-          'http://3.37.234.117:5000/users/join',
-          data: {
-            'name': _nameController.text,
-            'userType': _selectedValue,
-            'userId': int.parse(_sIdController.text),
-            'email': _mailController.text,
-            'password': value.toString(),
-            'phone': _phoneController.text,
-          });
-      if(response.statusCode == 201) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LoginPage(),
-          ),
-        );
-      }
-      else{
-        showToast('이미 가입된 학번 또는 이메일입니다.');
-      }
-    } catch (e) {
-      showToast('이미 가입된 학번 또는 이메일입니다.');
-      print(e);
-    }
-  }
-
-  buttonEnable(){
-    return _isChecked;
-  }
-
-  buttonFunction(){
-    if(formKey.currentState!.validate()){
-      formKey.currentState!.save();
-      postJoin();
-    }
-    else {
-      print('validate err');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
+                              builder: (context) => const ProfilePage(),
                             ),
                           );
                         },
@@ -140,38 +66,38 @@ class _SignUpPageState extends State<SignUpPage> {
                     Container(width: 10,),
                     Expanded(
                       flex: 1,
-                        child: DropdownButtonFormField2(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.only(left: 10),
-                            filled: true,
-                            labelText: '사용자 유형 *',
-                          ),
-                          icon: const Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.black45,
-                          ),
-                          iconSize: 30,
-                          buttonHeight: 60,
-                          buttonPadding: const EdgeInsets.only(right: 10),
-                          items: _userType.map((value) {
-                            return DropdownMenuItem(
-                              child: Container(
-                                  child: Text(value)
-                              ),
-                              value: value,);
-                          }).toList(),
-                          validator: (value) => CheckValidate().validateType(value.toString()),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          onChanged: (String? value){
-                            setState(() {
-                              _selectedValue = value!;
-                            });
-                          },
-                          onSaved: (value) {
-                            _selectedValue = value.toString();
-                          },
+                      child: DropdownButtonFormField2(
+                        decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.only(left: 10),
+                          filled: true,
+                          labelText: '사용자 유형 *',
                         ),
+                        icon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.black45,
+                        ),
+                        iconSize: 30,
+                        buttonHeight: 60,
+                        buttonPadding: const EdgeInsets.only(right: 10),
+                        items: _userType.map((value) {
+                          return DropdownMenuItem(
+                            child: Container(
+                                child: Text(value)
+                            ),
+                            value: value,);
+                        }).toList(),
+                        validator: (value) => CheckValidate().validateType(value.toString()),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onChanged: (String? value){
+                          setState(() {
+                            _selectedValue = value!;
+                          });
+                        },
+                        onSaved: (value) {
+                          _selectedValue = value.toString();
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -265,4 +191,5 @@ class _SignUpPageState extends State<SignUpPage> {
         )
     );
   }
+
 }
