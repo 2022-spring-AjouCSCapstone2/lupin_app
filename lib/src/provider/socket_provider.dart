@@ -9,6 +9,7 @@ import 'package:lupin_app/src/navigation_service.dart';
 import 'package:lupin_app/src/ui/3/room.dart';
 import 'package:lupin_app/src/ui/3/room_for_professor.dart';
 import 'package:lupin_app/src/uiutil/simple_dialog.dart';
+import 'package:lupin_app/src/uiutil/simple_dialog2.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 class SocketProvider extends ChangeNotifier {
