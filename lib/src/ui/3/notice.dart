@@ -4,32 +4,34 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/model/course_model.dart';
+import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:lupin_app/src/provider/post_provider.dart';
 import 'package:lupin_app/src/ui/4/post_write.dart';
 import 'package:lupin_app/src/ui/4/post_read.dart';
-
+import 'package:lupin_app/src/ui/4/notice_write.dart';
+import 'package:lupin_app/src/ui/4/notice_read.dart';
+import 'package:lupin_app/src/model/user_model.dart';
 import '../../model/course_post_model.dart';
 import '../../provider/app_state_provider.dart';
 import '../../uiutil/top_navigator.dart';
 
-class Board extends StatefulWidget {
+class Notice extends StatefulWidget {
   final Course course;
 
-  const Board(this.course, {Key? key}) : super(key: key);
+  const Notice(this.course, {Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _BoardState();
+  State<StatefulWidget> createState() => _NoticeState();
 }
 
-class _BoardState extends State<Board> {
-
+class _NoticeState extends State<Notice> {
   @override
   Widget build(BuildContext context) {
     setState(() {});
     return FutureBuilder(
       future:
-        Provider.of<PostProvider>(context, listen: false).getAllPosts(widget.course.courseId),
+      Provider.of<PostProvider>(context, listen: false).getNotice(widget.course.courseId),
       builder: (context, snapshot) {
         if (snapshot.hasData == false) {
           return const Center(
@@ -41,6 +43,7 @@ class _BoardState extends State<Board> {
           );
         }
         var provider = Provider.of<PostProvider>(context, listen: false);
+        var provider2 = Provider.of<UserInfoProvider>(context);
         return Scaffold(
           body: SafeArea(
             child: Column(
@@ -53,7 +56,7 @@ class _BoardState extends State<Board> {
                       const SizedBox(height: 20),
                       topNavigator(
                         context,
-                        '게시판',
+                        '공지사항',
                         leftWidget: Container(),
                         rightWidget: Container(),
                       ),
@@ -87,17 +90,21 @@ class _BoardState extends State<Board> {
                     ),
                   ),
                 ),
-                TextButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Post(widget.course),
-                          ));
-                    },
-                    icon: Icon(Icons.mode_edit_outline_outlined),
-                    label: Text('글 쓰기'),
-                )
+                if (provider2.currentUser!.userType == UserType.professor)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: TextButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NoticeWrite(widget.course),
+                            ));
+                      },
+                      icon: Icon(Icons.mode_edit_outline_outlined),
+                      label: Text('글 쓰기'),
+                    )
+                  ),
                 // const SizedBox(height: 30),
               ],
             ),
@@ -109,7 +116,7 @@ class _BoardState extends State<Board> {
   }
 
   ListView buildCourseListView(PostProvider provider) {
-    Posts coursePosts = provider.coursePosts!;
+    Posts courseNotices = provider.courseNotices!;
     return ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -121,13 +128,13 @@ class _BoardState extends State<Board> {
                   onTap: () {
                     AppState.pushPage(
                       context,
-                      PostRead(coursePosts.posts[index]),
+                      NoticeRead(courseNotices.posts[index]),
                     );
                   },
                   title: Row(
                     children: [
                       Text(
-                        coursePosts.posts[index].title,
+                        courseNotices.posts[index].title,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ],
@@ -135,14 +142,14 @@ class _BoardState extends State<Board> {
                   subtitle: Transform.translate(
                     offset: const Offset(0, 5),
                     child: Text(
-                      coursePosts.posts[index].content,
+                      courseNotices.posts[index].content,
                       style: Theme.of(context).textTheme.bodySmall,
                       maxLines:1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   trailing: Text(
-                    '${coursePosts.posts[index].createdAt.substring(2,10).replaceAll('-', '/')}',
+                    '${courseNotices.posts[index].createdAt.substring(2,10).replaceAll('-', '/')}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   isThreeLine: true,
@@ -155,7 +162,7 @@ class _BoardState extends State<Board> {
 
           return Container();
         },
-        itemCount: coursePosts.posts.length);
+        itemCount: courseNotices.posts.length);
   }
 }
 

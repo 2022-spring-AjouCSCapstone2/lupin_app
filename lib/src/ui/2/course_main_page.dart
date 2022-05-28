@@ -5,6 +5,7 @@ import 'package:lupin_app/src/model/timetable_model.dart';
 import 'package:lupin_app/src/ui/1/after_login_page.dart';
 import 'package:lupin_app/src/ui/3/room.dart';
 import 'package:lupin_app/src/ui/3/board.dart';
+import 'package:lupin_app/src/ui/3/notice.dart';
 import 'package:lupin_app/src/provider/post_provider.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:provider/provider.dart';
@@ -78,7 +79,7 @@ class _CourseMainPageState extends State<CourseMainPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Board(widget.course),
+                      builder: (context) => Notice(widget.course),
                     ));
               },
             ),

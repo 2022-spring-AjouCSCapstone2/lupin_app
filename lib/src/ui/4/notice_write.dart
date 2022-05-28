@@ -4,40 +4,39 @@ import 'package:lupin_app/src/model/course_model.dart';
 import 'package:lupin_app/src/apis.dart';
 import 'package:dio/dio.dart';
 import 'package:lupin_app/src/ui/3/board.dart';
+import 'package:lupin_app/src/ui/3/notice.dart';
 
-class Post extends StatefulWidget {
+class NoticeWrite extends StatefulWidget {
   final Course course;
 
-  const Post(this.course, {Key? key}) : super(key: key);
+  const NoticeWrite(this.course, {Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _PostState();
+  State<StatefulWidget> createState() => _NoticeWriteState();
 }
 
-class _PostState extends State<Post> {
+class _NoticeWriteState extends State<NoticeWrite> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
 
-  void postPost() async{
+  void postNotice() async{
     try{
-      Response response = await Apis.instance.postPost(
+      Response response = await Apis.instance.postNotice(
         title: _titleController.text,
         content: _contentController.text,
         courseId: widget.course.courseId,
       );
       if(response.statusCode == 200){
-        //토스트하고 페이지 이동
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Board(widget.course),
+            builder: (context) => Notice(widget.course),
           ),
         );
       } else{
         //에러
       }
     } catch (e){
-      print('check');
       print(e);
     }
 
@@ -77,7 +76,7 @@ class _PostState extends State<Post> {
             SizedBox(height: 40.0),
             ElevatedButton(
               onPressed: () {
-                postPost();
+                postNotice();
               },
               child: const Text("완료"),
             ),

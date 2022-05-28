@@ -109,4 +109,26 @@ class Apis {
     return response;
   }
 
+  Future<Posts> getNotice(courseId) async {
+    Response response = await dio.get(
+      '/posts/courses/$courseId?postType=NOTICE',
+    );
+    log.i(response.headers);
+    log.i(response.data);
+    return Posts.fromJson(response.data);
+  }
+
+  Future<Response> postNotice({required title, required content, required courseId}) async {
+    Response response = await dio.post(
+        '/posts/notices',
+        data: {
+          'title': title,
+          'content': content,
+          'courseId': courseId,
+        }
+    );
+    log.i(response.headers);
+    log.i(response.data);
+    return response;
+  }
 }
