@@ -51,33 +51,28 @@ class SocketProvider extends ChangeNotifier {
     socket.connect();
   }
 
+  void checkQuestion(int questionId, bool point) {
+    socket.emitWithAck(
+      'checkQuestion',
+      {'logId': questionId, 'point': point},
+      ack: (e) {
+        log.i('checkQuestion 메시지 : $e');
+        if (e['status'] == 'success') {
+          e = e['data'];
+        } else {
+          return;
+        }
+        if (e != 'Forbidden') {}
+      },
+    );
+  }
+
   void setListener() {
     socket.onConnecting((data) => log.i('연결 중'));
     socket.onConnectError((data) => log.e('연결 에러'));
     socket.onConnectTimeout((data) => log.e('소켓 타임아웃'));
     socket.onConnect((data) => log.i('소켓 연결 성공'));
 
-    // I/flutter (14952): │ 💡   {"content": "test1",
-    // I/flutter (14952): │ 💡   "quizLists": [
-    // I/flutter (14952): │ 💡     {
-    // I/flutter (14952): │ 💡       "no": 0,
-    // I/flutter (14952): │ 💡       "content": "no1",
-    // I/flutter (14952): │ 💡       "id": 86
-    // I/flutter (14952): │ 💡     },
-    // I/flutter (14952): │ 💡     {
-    // I/flutter (14952): │ 💡       "no": 1,
-    // I/flutter (14952): │ 💡       "content": "no2",
-    // I/flutter (14952): │ 💡       "id": 87
-    // I/flutter (14952): │ 💡     }
-    // I/flutter (14952): │ 💡   ],
-    // I/flutter (14952): │ 💡   "answer": {
-    // I/flutter (14952): │ 💡     "no": 0,
-    // I/flutter (14952): │ 💡     "content": "no1",
-    // I/flutter (14952): │ 💡     "id": 88
-    // I/flutter (14952): │ 💡   },
-    // I/flutter (14952): │ 💡   "id": 34,
-    // I/flutter (14952): │ 💡   "createdAt": "2022-05-28T10:01:56.819Z"
-    // I/flutter (14952): │ 💡 }
     socket.on('quiz', (data) {
       log.i(data);
       List quizList = data['quizLists'];
@@ -85,32 +80,80 @@ class SocketProvider extends ChangeNotifier {
       showSimpleDialog(NavigationService.navigatorKey.currentContext!, '퀴즈 도착',
           data['content'], list, data['id']);
     });
+
+    socket.on('newQuestion', (data) {
+      log.i(data);
+      var name =
+          data['isAnonymous'] == false ? '${data['user']['name']}님의' : '';
+      showSimpleDialog2(NavigationService.navigatorKey.currentContext!, '질문 도착',
+          data['content'], name, data['id']);
+    });
+    // socket.on('question', (data) {
+    //   log.i(data);
+    //   List quizList = data['quizLists'];
+    //   var list = quizList.map((e) => QuizModel.fromJson(e)).toList();
+    //   showSimpleDialog2(NavigationService.navigatorKey.currentContext!, '질문 도착',);
+    // });
   }
 
-  void showRoomList() {
-    socket.emit(
-      'showRoom',
+  void question(
+    Course course,
+    String content,
+    bool isAnonymous,
+  ) {
+    socket.emitWithAck(
+      'question',
+      {
+        'roomId': currentRoomId,
+        'type': 'QUESTION',
+        'isAnonymous': isAnonymous,
+        'content': content,
+        'courseId': course.courseId,
+      },
+      ack: (e) {
+        log.i('질문 메시지 : $e');
+        if (e['status'] == 'success') {
+          e = e['data'];
+        } else {
+          return;
+        }
+        if (e != 'Forbidden') {}
+      },
     );
   }
 
   void createRoom(BuildContext context, Course course) {
-    log.e(course);
-    socket.emitWithAck('createRoom', {'courseId': course.courseId}, ack: (e) {
-      log.i('방 생성 메시지 : $e');
-      if (e != 'Forbidden') {
-        //currentRoomId = e.toString();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RoomForProfessor(course),
-            ));
-      }
-    });
+    socket.emitWithAck(
+      'createRoom',
+      {'courseId': course.courseId},
+      ack: (e) {
+        if (e['status'] == 'success') {
+          e = e['data'];
+        } else {
+          return;
+        }
+        log.i('방 생성 메시지 : $e');
+        if (e != 'Forbidden') {
+          currentRoomId = e.toString();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RoomForProfessor(course),
+              ));
+        }
+      },
+    );
   }
 
   void joinRoom(BuildContext context, Course course) {
     socket.emitWithAck('joinRoom', {'courseId': course.courseId}, ack: (e) {
       log.i('방 참가 메시지 : $e');
+      if (e['status'] == 'success') {
+        e = e['data'];
+      } else {
+        Fluttertoast.showToast(msg: e['data']);
+        return;
+      }
       if (e != 'no course session opened') {
         currentRoomId = e.toString();
         Navigator.push(
@@ -135,6 +178,11 @@ class SocketProvider extends ChangeNotifier {
   void leaveRoom(Course course) {
     socket.emitWithAck('leaveRoom', {'roomId': currentRoomId}, ack: (e) {
       log.i('leaveRoom 메시지 : $e');
+      if (e['status'] == 'success') {
+        e = e['data'];
+      } else {
+        return;
+      }
     });
   }
 
@@ -149,11 +197,19 @@ class SocketProvider extends ChangeNotifier {
       },
       ack: (e) {
         log.i('quiz 메시지 : $e');
+        if (e['status'] == 'success') {
+          e = e['data'];
+        } else {
+          return;
+        }
       },
     );
   }
 
   void answer(int quizId, int answer) {
-    socket.emit('quizAnswer', {'quizId': quizId, 'answer': answer});
+    socket.emitWithAck('quizAnswer', {'quizId': quizId, 'answer': answer},
+        ack: (e) {
+      log.i('답변 메시지 :$e');
+    });
   }
 }

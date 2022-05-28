@@ -8,7 +8,6 @@ import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/4/question.dart';
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
-import 'dart:convert';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class Room extends StatefulWidget {
@@ -23,22 +22,19 @@ class Room extends StatefulWidget {
 class roomData {
   String name = '';
 
-  roomData(String name){
+  roomData(String name) {
     this.name = name;
   }
 
-  roomData.fromJson(Map<String, dynamic> json)
-      : name = json['name'];
+  roomData.fromJson(Map<String, dynamic> json) : name = json['name'];
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'name': name,
       };
 }
 
-void socket(){
-  IO.Socket socket =
-  IO.io('http://3.37.234.117:5000', <String, dynamic>{
+void socket() {
+  IO.Socket socket = IO.io('http://3.37.234.117:5000', <String, dynamic>{
     'transports': ['websocket'],
     'autoConnect': false,
   });
@@ -143,7 +139,7 @@ class _RoomState extends State<Room> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Question(widget.course),
+                          builder: (context) => Question(widget.course, true),
                         ));
                   },
                   child: const Text('익명 질문하기'),
@@ -155,7 +151,13 @@ class _RoomState extends State<Room> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Question(widget.course, false),
+                        ));
+                  },
                   child: const Text('질문하기'),
                 ),
               )
