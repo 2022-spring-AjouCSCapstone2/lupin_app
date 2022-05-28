@@ -37,7 +37,6 @@ class _PostReadState extends State<PostRead> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -113,7 +112,12 @@ class _PostReadState extends State<PostRead> {
                           maxLines: 5,
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
-                            border: InputBorder.none,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                              borderRadius: BorderRadius.all(
+                                Radius.elliptical(13, 13),
+                              ),
+                            ),
                           ),
                           style: TextStyle(
                             fontSize: 18,
@@ -132,41 +136,37 @@ class _PostReadState extends State<PostRead> {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
+                      //color: Colors.grey.shade200,
                     ),
                   ),
                 ),
                 Container(
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                        Radius.elliptical(13, 13),
+                    //color: Colors.grey.shade200,
+                  ),
+                  child: TextFormField(
+                    controller: _commentController,
+                    decoration: InputDecoration(
+                      hintText: '댓글을 입력하세요.',
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                        borderRadius: BorderRadius.all(
+                          Radius.elliptical(13, 13),
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      suffixIcon: IconButton(
+                        onPressed: () { postComment(); },
+                        icon: Icon(
+                          Icons.send_rounded,
+                          color: Color(0xFF5db075),
+                        ),
+                      ),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: TextFormField(
-                          controller: _commentController,
-                          decoration: InputDecoration(
-                            hintText: '댓글을 입력하세요.',
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: IconButton(
-                          onPressed: () { postComment(); },
-                          icon: Icon(
-                            Icons.send_rounded,
-                            color: Color(0xFF5db075),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                )
+                ),
               ],
             ),
           ),
@@ -179,6 +179,7 @@ class _PostReadState extends State<PostRead> {
     return ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
+        padding: EdgeInsets.only(left: 10.0, right: 10.0),
         itemBuilder: (context, index) {
           return Column(
             children: [
@@ -192,14 +193,12 @@ class _PostReadState extends State<PostRead> {
                       ),
                     ],
                   ),
-
                 ),
               ),
             ],
           );
         },
         separatorBuilder: (context, index) {
-
           return Container();
         },
         itemCount: comments!.length);
