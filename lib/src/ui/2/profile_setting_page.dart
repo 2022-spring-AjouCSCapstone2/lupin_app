@@ -1,10 +1,17 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:lupin_app/src/ui/1/profile_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lupin_app/src/model/user_model.dart';
+import 'package:lupin_app/src/validate.dart';
+import 'package:dio/dio.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+import 'package:lupin_app/src/apis.dart';
 
 class ProfileSettingPage extends StatefulWidget {
-  const ProfileSettingPage({Key? key}) : super(key: key);
+  final User user;
+
+  const ProfileSettingPage(this.user, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ProfileSettingPageState();
@@ -13,177 +20,186 @@ class ProfileSettingPage extends StatefulWidget {
 class _ProfileSettingPageState extends State<ProfileSettingPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  final _pwController = TextEditingController();
+  final _pw2Controller = TextEditingController();
+  final _pw3Controller = TextEditingController();
+  final _phoneController = TextEditingController();
+
+  FocusNode phoneFocus = FocusNode();
+  FocusNode pw1Focus = FocusNode();
+  FocusNode pw2Focus = FocusNode();
+  FocusNode pw3Focus = FocusNode();
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        backgroundColor: Colors.tealAccent,
+        textColor: Colors.black,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM);
+  }
+
+  void buttonFunction(){
+    if(formKey.currentState!.validate()){
+      formKey.currentState!.save();
+      pw1Focus.unfocus();
+      pw2Focus.unfocus();
+      pw3Focus.unfocus();
+      patchPw();
+    }
+    else {
+      print('validate err');
+    }
+  }
+
+  void patchPw() async {
+    try{
+      var value1 = sha256.convert(utf8.encode(_pwController.text));
+      var value2 = sha256.convert(utf8.encode(_pw3Controller.text));
+      Response response = await Apis.instance.patchPasswd(
+        password: value2.toString(),
+        newPassword: value1.toString(),
+      );
+      if(response.statusCode == 200){
+        showToast('비밀번호가 정상적으로 변경됐습니다.');
+        _pwController.text = '';
+        _pw2Controller.text = '';
+        _pw3Controller.text = '';
+        setState(() {});
+      } else{
+        showToast('현재 비밀번호가 옳지 않습니다.');
+      }
+    } catch(e){
+      showToast('현재 비밀번호가 옳지 않습니다.');
+      print(e);
+    }
+  }
+
+  void patchPhone() async {
+    try{
+      Response response = await Apis.instance.patchPhone(
+        phone: _phoneController.text,
+      );
+      if(response.statusCode == 200){
+        widget.user.phone = _phoneController.text;
+        showToast('전화번호가 정상적으로 변경됐습니다.');
+      }
+    } catch(e){
+    print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _phoneController.text = widget.user.phone!;
+
     return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          title: Text(
+            '프로필 설정',
+          ),
+        ),
         body: SafeArea(
           child: Form(
             key: formKey,
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 24.0),
               children: <Widget>[
-                const SizedBox(height: 40),
-                Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ProfilePage(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.arrow_back_ios),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "회원가입",
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40.0,),
                 Row(
                   children: [
                     Expanded(
-                      flex: 1,
-                      child: TextFormField(
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                            filled: true,
-                            labelText: '이름 *'
+                      flex: 4,
+                      child: Text(
+                        '비밀번호 변경',
+                        style: TextStyle(
+                          fontSize: 15,
                         ),
-                        validator: (value) => CheckValidate().validateName(value),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
                       ),
                     ),
-                    Container(width: 10,),
+                    Container(width: 10.0,),
                     Expanded(
                       flex: 1,
-                      child: DropdownButtonFormField2(
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.only(left: 10),
-                          filled: true,
-                          labelText: '사용자 유형 *',
+                      child: OutlinedButton(
+                        onPressed: () => buttonFunction(),
+                        child: Text(
+                            'Save'
                         ),
-                        icon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.black45,
-                        ),
-                        iconSize: 30,
-                        buttonHeight: 60,
-                        buttonPadding: const EdgeInsets.only(right: 10),
-                        items: _userType.map((value) {
-                          return DropdownMenuItem(
-                            child: Container(
-                                child: Text(value)
-                            ),
-                            value: value,);
-                        }).toList(),
-                        validator: (value) => CheckValidate().validateType(value.toString()),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (String? value){
-                          setState(() {
-                            _selectedValue = value!;
-                          });
-                        },
-                        onSaved: (value) {
-                          _selectedValue = value.toString();
-                        },
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 12.0),
-                TextFormField(
-                  controller: _mailController,
-                  decoration: InputDecoration(filled: true, labelText: '이메일 *'),
-                  validator: (value) => CheckValidate().validateEmail(value),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                ),
-                SizedBox(height: 12.0),
+                SizedBox(height: 20.0,),
                 TextFormField(
                   controller: _pwController,
+                  focusNode: pw1Focus,
                   decoration: InputDecoration(
                     filled: true,
-                    labelText: '비밀번호 *',
+                    labelText: '새 비밀번호',
                     hintText: '특수문자, 대소문자, 숫자 포함 8 ~ 15자',
                   ),
                   validator: (value) => CheckValidate().validatePassword(value),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  //autovalidateMode: AutovalidateMode.onUserInteraction,
                   obscureText: true,
                 ),
                 SizedBox(height: 12.0),
                 TextFormField(
                   controller: _pw2Controller,
+                  focusNode: pw2Focus,
                   decoration: InputDecoration(
                       filled: true,
-                      labelText: '비밀번호 확인 *'
+                      labelText: '새 비밀번호 확인'
                   ),
                   validator: (value) => CheckValidate().validatePassword2(_pwController.text, value),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  //autovalidateMode: AutovalidateMode.onUserInteraction,
                   obscureText: true,
                 ),
-                SizedBox(height: 12.0),
+                SizedBox(height: 20.0),
                 TextFormField(
-                  controller: _phoneController,
+                  controller: _pw3Controller,
+                  focusNode: pw3Focus,
                   decoration: InputDecoration(
                       filled: true,
-                      labelText: '전화번호'
+                      labelText: '현재 비밀번호'
                   ),
-                  validator: (value) => CheckValidate().validatePhone(value),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => CheckValidate().validatePassword3(_pw3Controller.text),
+                  //autovalidateMode: AutovalidateMode.onUserInteraction,
+                  obscureText: true,
                 ),
-                SizedBox(height: 12.0),
-                TextFormField(
-                  controller: _sIdController,
-                  decoration: InputDecoration(
-                      filled: true,
-                      labelText: '학번/교번 *'
-                  ),
-                  validator: (value) => CheckValidate().validateSId(value),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                ),
-                const SizedBox(height: 12.0),
+                SizedBox(height: 60.0),
                 Row(
                   children: [
                     Expanded(
-                      flex: 5,
-                      child: CheckboxListTile(
-                          title: Text('개인정보 수집 및 이용 동의',style: TextStyle(color: Colors.grey)),
-                          value: _isChecked,
-                          controlAffinity: ListTileControlAffinity.leading,
-                          onChanged: (bool? value) {
-                            if(value != null){
-                              setState(() {
-                                _isChecked = value;
-                              });
-                            }
-                          }),
+                      flex: 4,
+                      child: Text('전화번호 변경'),
                     ),
-                    Container(width: 10,),
+                    SizedBox(width: 10.0,),
                     Expanded(
                       flex: 1,
-                      child: IconButton(
-                        onPressed: () {
-                          //약관 보여주기
-                        },
-                        icon: const Icon(Icons.chevron_right_outlined), color: Colors.grey,
+                      child: OutlinedButton(
+                        onPressed: () => {
+                          patchPhone(),
+                          phoneFocus.unfocus(),
+                           },
+                        child: Text(
+                          'Save',
+                        ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 12.0),
-                ElevatedButton(
-                  onPressed: buttonEnable() ? () => buttonFunction() : null,
-                  child: Text("회원가입"),
+                SizedBox(height: 20.0),
+                TextFormField(
+                  controller: _phoneController,
+                  focusNode: phoneFocus,
+                  decoration: InputDecoration(
+                    filled: true,
+                    labelText: '전화번호',
+                  ),
+                  //validator: (value) => CheckValidate().validatePassword2(_pwController.text, value),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
               ],
             ),

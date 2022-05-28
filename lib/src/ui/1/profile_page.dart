@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/apis.dart';
 import 'package:lupin_app/src/model/user_model.dart';
+import 'package:lupin_app/src/provider/app_state_provider.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:lupin_app/src/uiutil/top_navigator.dart';
 import 'package:provider/provider.dart';
+import 'package:lupin_app/src/ui/2/profile_setting_page.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +41,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<UserInfoProvider>(context, listen: false);
+    setState(() {});
+    var provider = Provider.of<UserInfoProvider>(context, listen: true);
     return SafeArea(
       child: ListView(
         children: [
@@ -62,7 +65,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           'Profile',
                           themeColor: Colors.white,
                           leftWidget: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              AppState.pushPage(
+                                context,
+                                ProfileSettingPage(provider.currentUser!),
+                              );
+                            },
                             child: Text(
                               'Settings',
                               style: Theme.of(context)

@@ -67,7 +67,7 @@ class SocketProvider extends ChangeNotifier {
     socket.emitWithAck('createRoom', {'courseId': course.courseId}, ack: (e) {
       log.i('방 생성 메시지 : $e');
       if (e != 'Forbidden') {
-        currentRoomId = e.toString();
+        //currentRoomId = e.toString();
         Navigator.push(
             context,
             MaterialPageRoute(
