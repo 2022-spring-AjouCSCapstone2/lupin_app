@@ -4,16 +4,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
-import 'dart:convert';
-import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
-import 'package:crypto/crypto.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lupin_app/src/apis.dart';
 import 'package:lupin_app/src/provider/course_provider.dart';
+import 'package:lupin_app/src/provider/socket_provider.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/0/signup.dart';
 import 'package:lupin_app/src/ui/1/after_login_page.dart';
@@ -50,14 +46,15 @@ class _LoginPageState extends State<LoginPage> {
             .getUserAllCourses();
         Provider.of<UserInfoProvider>(context, listen: false)
             .setCurrentUser(response);
+        Provider.of<SocketProvider>(context, listen: false).socketInit();
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => const AfterLogin(),
           ),
         );
-      }
-      else {
+      } else {
         showToast('잘못된 이메일 또는 패스워드입니다.');
         print(response);
       }

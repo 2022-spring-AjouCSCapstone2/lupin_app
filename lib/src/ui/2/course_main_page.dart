@@ -7,12 +7,11 @@ import 'package:lupin_app/src/ui/3/room.dart';
 import 'package:lupin_app/src/ui/3/board.dart';
 import 'package:lupin_app/src/ui/3/notice.dart';
 import 'package:lupin_app/src/provider/post_provider.dart';
+import 'package:lupin_app/src/model/user_model.dart';
+import 'package:lupin_app/src/provider/socket_provider.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
+import 'package:lupin_app/src/ui/3/board.dart';
 import 'package:provider/provider.dart';
-import 'package:dio/dio.dart';
-
-import '../4/post_write.dart';
-import '../4/post_read.dart';
 
 class CourseMainPage extends StatefulWidget {
   final Course course;
@@ -31,11 +30,15 @@ class _CourseMainPageState extends State<CourseMainPage> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Room(widget.course),
-                    ));
+                var userProvider =
+                    Provider.of<UserInfoProvider>(context, listen: false);
+                var socketProvider =
+                    Provider.of<SocketProvider>(context, listen: false);
+                if (userProvider.currentUser?.userType == UserType.professor) {
+                  socketProvider.createRoom(context, widget.course);
+                } else {
+                  socketProvider.joinRoom(context, widget.course);
+                }
               },
               icon: Icon(Icons.airplay)),
         ],
