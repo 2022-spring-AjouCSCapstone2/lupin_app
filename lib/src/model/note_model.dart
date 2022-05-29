@@ -32,9 +32,9 @@ class Note {
   String type;
   String? recordKey;
   String? script;
-  String content;
+  String? content;
   bool isAnonymous;
-  bool point;
+  bool? point;
   String createdAt;
   Note_Course course;
 
