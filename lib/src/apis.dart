@@ -4,7 +4,13 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:logger/logger.dart';
 import 'package:lupin_app/src/model/course_post_model.dart';
 import 'package:lupin_app/src/model/my_courses_model.dart';
+import 'package:lupin_app/src/model/course_post_model.dart';
 import 'package:lupin_app/src/model/post_detail_model.dart';
+import 'package:lupin_app/src/model/course_note_model.dart';
+import 'package:lupin_app/src/model/note_model.dart';
+import 'model/post_model.dart';
+import 'package:logger/logger.dart';
+
 
 ///await Apis.instance.login(email: 'wdad', password: 'd'); 이렇게 사용하시면 됩니다
 class Apis {
@@ -129,13 +135,13 @@ class Apis {
     return response;
   }
 
-  Future<Response> getNote(courseId) async {
+  Future<Notes> getNote(courseId, day) async {
     Response response = await dio.get(
-      '/courses/$courseId/logs',
+      '/courses/$courseId/logs?day=$day',
     );
     log.i(response.headers);
     log.i(response.data);
-    return response;
+    return Notes.fromJson(response.data);
   }
 
   Future<Response> patchPasswd(

@@ -13,9 +13,9 @@ import 'package:lupin_app/src/validate.dart';
 import 'package:provider/provider.dart';
 
 class ProfileSettingPage extends StatefulWidget {
-  final User? user;
+  final UserInfoProvider? provider;
 
-  const ProfileSettingPage(this.user, {Key? key}) : super(key: key);
+  const ProfileSettingPage(this.provider, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ProfileSettingPageState();
@@ -99,8 +99,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
       Response response = await Apis.instance.patchPhone(
         phone: _phoneController.text,
       );
-      if (response.statusCode == 200) {
-        widget.user?.phone = _phoneController.text;
+      if(response.statusCode == 200){
+        widget.provider!.currentUser?.phone = _phoneController.text;
         showToast('전화번호가 정상적으로 변경됐습니다.');
       }
     } catch (e) {
@@ -111,8 +111,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   @override
   Widget build(BuildContext context) {
     String? phone = '';
-    if (widget.user?.phone != null) {
-      phone = widget.user?.phone;
+    if(widget.provider!.currentUser?.phone != null){
+      phone = widget.provider!.currentUser?.phone;
     }
     _phoneController.text = phone!;
 
@@ -225,7 +225,6 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                     filled: true,
                     labelText: '전화번호',
                   ),
-                  //validator: (value) => CheckValidate().validatePassword2(_pwController.text, value),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
                 SizedBox(height: 20.0),

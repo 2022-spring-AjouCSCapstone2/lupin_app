@@ -9,6 +9,10 @@ import 'package:lupin_app/src/ui/0/login.dart';
 import 'package:lupin_app/src/ui/2/profile_setting_page.dart';
 import 'package:lupin_app/src/uiutil/top_navigator.dart';
 import 'package:provider/provider.dart';
+import 'package:lupin_app/src/ui/2/profile_setting_page.dart';
+import 'package:lupin_app/src/provider/user_info_provider.dart';
+import 'package:lupin_app/src/ui/0/login.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -64,10 +68,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           themeColor: Colors.white,
                           leftWidget: TextButton(
                             onPressed: () {
-                              AppState.pushPage(
+                              Navigator.push(
                                 context,
-                                ProfileSettingPage(provider.currentUser!),
-                              );
+                                CupertinoPageRoute(
+                                  builder: (context) => ProfileSettingPage(provider),
+                                )
+                              ).then((value) {setState(() {});});
                             },
                             child: Text(
                               'Settings',
@@ -132,13 +138,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Padding buildSettings(UserInfoProvider provider) {
     String? phone = '';
-    if (provider.currentUser?.phone != null) {
+    if(provider.currentUser?.phone != null){
       phone = provider.currentUser?.phone!;
     }
     String userType = '';
-    if (provider.currentUser?.userType == UserType.student) {
+    if(provider.currentUser?.userType == UserType.student){
       userType = '학번';
-    } else if (provider.currentUser?.userType == UserType.professor) {
+    }
+    else if(provider.currentUser?.userType == UserType.professor){
       userType = '교번';
     }
 
