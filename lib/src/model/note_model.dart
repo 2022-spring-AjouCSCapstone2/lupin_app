@@ -33,17 +33,19 @@ class Note {
   String? recordKey;
   String? script;
   String? content;
+  String? summary;
   bool isAnonymous;
   bool? point;
   String createdAt;
   Note_Course course;
 
-  Note(this.id, this.type, this.recordKey, this.script, this.content, this.isAnonymous,
+  Note(this.id, this.type, this.recordKey, this.script, this.content, this.summary, this.isAnonymous,
       this.point, this.createdAt, this.course);
 
   @override
   String toString() {
-    return 'Note{id: $id, type: $type, recordKey: $recordKey, script: $script, isAnonymous: $isAnonymous,'
+    return 'Note{id: $id, type: $type, recordKey: $recordKey, script: $script, content: $content, '
+        'summary: $summary, isAnonymous: $isAnonymous,'
         'point: $point, createdAt: $createdAt, course: $course}';
   }
 

@@ -47,6 +47,8 @@ class _NoteReadState extends State<NoteRead> {
   Widget build(BuildContext context) {
     if(widget.note.type == 'SCRIPT'){
       _contentController.text = widget.note.script!;
+    } else if(widget.note.type == 'SUMMARY'){
+      _contentController.text = widget.note.summary!;
     } else if(widget.note.type == 'QUESTION'){
       _contentController.text = widget.note.content!;
     } else if(widget.note.type == 'RECORDING'){

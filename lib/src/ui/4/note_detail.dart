@@ -36,7 +36,7 @@ class _NoteDetailState extends State<NoteDetail> {
     setState(() {});
     return FutureBuilder(
       future:
-      //Provider.of<NoteProvider>(context, listen: false).getNote(widget.course.courseId, '20220528'),
+      //Provider.of<NoteProvider>(context, listen: false).getNote(widget.course.courseId, '20220529'),
       Provider.of<NoteProvider>(context, listen: false).getNote(widget.course.courseId, DateFormat('yyyyMMdd').format(widget.date)),
       builder: (context, snapshot) {
         if (snapshot.hasData == false) {

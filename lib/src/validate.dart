@@ -60,7 +60,7 @@ class CheckValidate {
 
   String? validateSId(String? value) {
     if (value!.isEmpty){
-      return '학번을 입력하세요.';
+      return '학번/교번을 입력하세요.';
     } else {
       return null;
     }

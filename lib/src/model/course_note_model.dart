@@ -10,7 +10,7 @@ class Notes {
 
     for (var i in jsonData) {
       Map<String, dynamic> courseMap = i['course'];
-      notes.add(Note(i['id'], i['type'], i['recordKey'], i['script'], i['content'],
+      notes.add(Note(i['id'], i['type'], i['recordKey'], i['script'], i['content'], i['summary'],
           i['isAnonymous'], i['point'], i['createdAt'], Note_Course.fromJson(courseMap)));
     }
     return Notes(notes);
