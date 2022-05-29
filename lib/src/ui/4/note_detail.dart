@@ -132,12 +132,15 @@ class _NoteDetailState extends State<NoteDetail> {
                   /*
                   subtitle: Transform.translate(
                     offset: const Offset(0, 5),
+                    /*
                     child: Text(
-                      courseNotes.notes[index].content,
+                      courseNotes.notes[index].content!,
                       style: Theme.of(context).textTheme.bodySmall,
                       maxLines:1,
                       overflow: TextOverflow.ellipsis,
                     ),
+
+                     */
                   ),
 
                    */
