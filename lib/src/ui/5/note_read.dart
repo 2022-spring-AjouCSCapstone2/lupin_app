@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:lupin_app/src/provider/post_provider.dart';
 import 'package:lupin_app/src/ui/3/board.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../provider/app_state_provider.dart';
 
 class NoteRead extends StatefulWidget {
@@ -23,13 +24,34 @@ class NoteRead extends StatefulWidget {
 
 class _NoteReadState extends State<NoteRead> {
   final _contentController = TextEditingController();
+  String url = '';
+  Uri? uri;
+
+  void _launchUrl() async {
+    if (!await launchUrl(uri!)) throw 'Could not launch $uri';
+  }
+
+  void test() async {
+    uri = await resolveRedirection(url: widget.note.recordKey!);
+  }
+
+  Future<Uri> resolveRedirection({required String url}) async {
+    Dio dio = new Dio();
+    dio.options.followRedirects = true;
+    dio.options.responseType = ResponseType.plain;
+    Response response = await dio.get(url.toString());
+    return response.realUri;
+  }
 
   @override
   Widget build(BuildContext context) {
     if(widget.note.type == 'SCRIPT'){
       _contentController.text = widget.note.script!;
     } else if(widget.note.type == 'QUESTION'){
-      _contentController.text = widget.note.content;
+      _contentController.text = widget.note.content!;
+    } else if(widget.note.type == 'RECORDING'){
+      uri = Uri.parse(widget.note.recordKey!);
+      _launchUrl();
     }
     return Scaffold(
           appBar: AppBar(

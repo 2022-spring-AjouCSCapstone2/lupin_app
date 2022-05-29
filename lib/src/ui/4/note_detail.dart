@@ -36,7 +36,7 @@ class _NoteDetailState extends State<NoteDetail> {
     setState(() {});
     return FutureBuilder(
       future:
-      Provider.of<NoteProvider>(context, listen: false).getNote(widget.course.courseId, '20220528'),
+      Provider.of<NoteProvider>(context, listen: false).getNote(widget.course.courseId, '20220529'),
       //Provider.of<NoteProvider>(context, listen: false).getNote(widget.course.courseId, DateFormat('yyyyMMdd').format(widget.date)),
       builder: (context, snapshot) {
         if (snapshot.hasData == false) {
@@ -131,12 +131,15 @@ class _NoteDetailState extends State<NoteDetail> {
                   ),
                   subtitle: Transform.translate(
                     offset: const Offset(0, 5),
+                    /*
                     child: Text(
-                      courseNotes.notes[index].content,
+                      courseNotes.notes[index].content!,
                       style: Theme.of(context).textTheme.bodySmall,
                       maxLines:1,
                       overflow: TextOverflow.ellipsis,
                     ),
+
+                     */
                   ),
                   isThreeLine: true,
                 ),
