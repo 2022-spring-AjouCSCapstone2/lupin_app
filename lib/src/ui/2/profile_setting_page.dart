@@ -1,13 +1,16 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lupin_app/src/apis.dart';
 import 'package:lupin_app/src/model/user_model.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/validate.dart';
-import 'package:dio/dio.dart';
-import 'package:crypto/crypto.dart';
-import 'dart:convert';
-import 'package:lupin_app/src/apis.dart';
+import 'package:provider/provider.dart';
 
 class ProfileSettingPage extends StatefulWidget {
   final UserInfoProvider? provider;
@@ -40,44 +43,59 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         gravity: ToastGravity.BOTTOM);
   }
 
-  void buttonFunction(){
-    if(formKey.currentState!.validate()){
+  void buttonFunction() {
+    if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       pw1Focus.unfocus();
       pw2Focus.unfocus();
       pw3Focus.unfocus();
       patchPw();
-    }
-    else {
+    } else {
       print('validate err');
     }
   }
 
+  void changeProfileImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    var provider = Provider.of<UserInfoProvider>(context, listen: false);
+    if (result != null) {
+      // File file = File(result.files.single.path!);
+
+      Response response =
+          await Apis.instance.uploadProfileImage(result.files.single.path!);
+      provider.currentUser!.path = response.data['path'];
+      provider.changeProfile();
+    } else {
+      // User canceled the picker
+    }
+  }
+
   void patchPw() async {
-    try{
+    try {
       var value1 = sha256.convert(utf8.encode(_pwController.text));
       var value2 = sha256.convert(utf8.encode(_pw3Controller.text));
       Response response = await Apis.instance.patchPasswd(
         password: value2.toString(),
         newPassword: value1.toString(),
       );
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         showToast('비밀번호가 정상적으로 변경됐습니다.');
         _pwController.text = '';
         _pw2Controller.text = '';
         _pw3Controller.text = '';
         setState(() {});
-      } else{
+      } else {
         showToast('현재 비밀번호가 옳지 않습니다.');
       }
-    } catch(e){
+    } catch (e) {
       showToast('현재 비밀번호가 옳지 않습니다.');
       print(e);
     }
   }
 
   void patchPhone() async {
-    try{
+    try {
       Response response = await Apis.instance.patchPhone(
         phone: _phoneController.text,
       );
@@ -85,8 +103,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         widget.provider!.currentUser?.phone = _phoneController.text;
         showToast('전화번호가 정상적으로 변경됐습니다.');
       }
-    } catch(e){
-    print(e);
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -112,7 +130,9 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 24.0),
               children: <Widget>[
-                SizedBox(height: 40.0,),
+                SizedBox(
+                  height: 40.0,
+                ),
                 Row(
                   children: [
                     Expanded(
@@ -124,19 +144,21 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                         ),
                       ),
                     ),
-                    Container(width: 10.0,),
+                    Container(
+                      width: 10.0,
+                    ),
                     Expanded(
                       flex: 1,
                       child: OutlinedButton(
                         onPressed: () => buttonFunction(),
-                        child: Text(
-                            'Save'
-                        ),
+                        child: Text('Save'),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20.0,),
+                SizedBox(
+                  height: 20.0,
+                ),
                 TextFormField(
                   controller: _pwController,
                   focusNode: pw1Focus,
@@ -153,11 +175,10 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                 TextFormField(
                   controller: _pw2Controller,
                   focusNode: pw2Focus,
-                  decoration: InputDecoration(
-                      filled: true,
-                      labelText: '새 비밀번호 확인'
-                  ),
-                  validator: (value) => CheckValidate().validatePassword2(_pwController.text, value),
+                  decoration:
+                      InputDecoration(filled: true, labelText: '새 비밀번호 확인'),
+                  validator: (value) => CheckValidate()
+                      .validatePassword2(_pwController.text, value),
                   //autovalidateMode: AutovalidateMode.onUserInteraction,
                   obscureText: true,
                 ),
@@ -165,11 +186,10 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                 TextFormField(
                   controller: _pw3Controller,
                   focusNode: pw3Focus,
-                  decoration: InputDecoration(
-                      filled: true,
-                      labelText: '현재 비밀번호'
-                  ),
-                  validator: (value) => CheckValidate().validatePassword3(_pw3Controller.text),
+                  decoration:
+                      InputDecoration(filled: true, labelText: '현재 비밀번호'),
+                  validator: (value) =>
+                      CheckValidate().validatePassword3(_pw3Controller.text),
                   //autovalidateMode: AutovalidateMode.onUserInteraction,
                   obscureText: true,
                 ),
@@ -180,14 +200,16 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                       flex: 4,
                       child: Text('전화번호 변경'),
                     ),
-                    SizedBox(width: 10.0,),
+                    SizedBox(
+                      width: 10.0,
+                    ),
                     Expanded(
                       flex: 1,
                       child: OutlinedButton(
                         onPressed: () => {
                           patchPhone(),
                           phoneFocus.unfocus(),
-                           },
+                        },
                         child: Text(
                           'Save',
                         ),
@@ -205,11 +227,14 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                   ),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
+                SizedBox(height: 20.0),
+                OutlinedButton(
+                  onPressed: () => changeProfileImage(),
+                  child: Text('프로필 변경'),
+                ),
               ],
             ),
           ),
-        )
-    );
+        ));
   }
-
 }

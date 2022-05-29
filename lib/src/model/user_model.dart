@@ -8,8 +8,10 @@ class User {
   UserType userType;
   String email;
   String? phone;
+  String? path;
 
-  User(this.id, this.userId, this.name, this.userType, this.email, this.phone);
+  User(this.id, this.userId, this.name, this.userType, this.email, this.phone,
+      {this.path});
 
   @override
   String toString() {
@@ -30,6 +32,7 @@ class User {
       userType,
       json['email'],
       json['phone'],
+      path: json['path'],
     );
   }
 }

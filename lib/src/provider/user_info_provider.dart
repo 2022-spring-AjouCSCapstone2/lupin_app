@@ -10,4 +10,8 @@ class UserInfoProvider extends ChangeNotifier {
   void setCurrentUser(Response response) {
     currentUser = User.fromJson(response.data);
   }
+
+  void changeProfile() {
+    notifyListeners();
+  }
 }
