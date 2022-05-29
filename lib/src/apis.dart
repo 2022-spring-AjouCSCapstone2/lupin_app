@@ -1,12 +1,10 @@
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:lupin_app/src/model/my_courses_model.dart';
-import 'package:lupin_app/src/model/course_post_model.dart';
-import 'package:lupin_app/src/model/post_detail_model.dart';
-import 'model/post_model.dart';
 import 'package:logger/logger.dart';
-
+import 'package:lupin_app/src/model/course_post_model.dart';
+import 'package:lupin_app/src/model/my_courses_model.dart';
+import 'package:lupin_app/src/model/post_detail_model.dart';
 
 ///await Apis.instance.login(email: 'wdad', password: 'd'); 이렇게 사용하시면 됩니다
 class Apis {
@@ -27,7 +25,6 @@ class Apis {
     ..options.baseUrl = 'http://3.37.234.117:5000'
     ..options.connectTimeout = 5000
     ..options.receiveTimeout = 3000;
-
 
   Future<Response> login({required email, required password}) async {
     Response response = await dio.post(
@@ -83,7 +80,8 @@ class Apis {
     return DetailPost.fromJson(response.data);
   }
 
-  Future<Response> postPost({required title, required content, required courseId}) async {
+  Future<Response> postPost(
+      {required title, required content, required courseId}) async {
     Response response = await dio.post(
       '/posts',
       data: {
@@ -119,15 +117,13 @@ class Apis {
     return Posts.fromJson(response.data);
   }
 
-  Future<Response> postNotice({required title, required content, required courseId}) async {
-    Response response = await dio.post(
-        '/posts/notices',
-        data: {
-          'title': title,
-          'content': content,
-          'courseId': courseId,
-        }
-    );
+  Future<Response> postNotice(
+      {required title, required content, required courseId}) async {
+    Response response = await dio.post('/posts/notices', data: {
+      'title': title,
+      'content': content,
+      'courseId': courseId,
+    });
     log.i(response.headers);
     log.i(response.data);
     return response;
@@ -142,26 +138,31 @@ class Apis {
     return response;
   }
 
-  Future<Response> patchPasswd({required password, required newPassword}) async {
-    Response response = await dio.patch(
-        '/users/password',
-        data: {
-        'password': password,
-        'newPassword': newPassword,
-      }
-    );
+  Future<Response> patchPasswd(
+      {required password, required newPassword}) async {
+    Response response = await dio.patch('/users/password', data: {
+      'password': password,
+      'newPassword': newPassword,
+    });
     log.i(response.headers);
     log.i(response.data);
     return response;
   }
 
   Future<Response> patchPhone({required phone}) async {
-    Response response = await dio.patch(
-        '/users',
-        data: {
-          'phone': phone,
-        }
-    );
+    Response response = await dio.patch('/users', data: {
+      'phone': phone,
+    });
+    log.i(response.headers);
+    log.i(response.data);
+    return response;
+  }
+
+  Future<Response> uploadProfileImage(String path) async {
+    var formData = FormData.fromMap(
+        {'image': await MultipartFile.fromFile(path, filename: 'image.png')});
+    Response response = await dio.patch('/users/image', data: formData);
+
     log.i(response.headers);
     log.i(response.data);
     return response;

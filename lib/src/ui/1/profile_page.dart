@@ -6,11 +6,8 @@ import 'package:lupin_app/src/model/user_model.dart';
 import 'package:lupin_app/src/provider/app_state_provider.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
 import 'package:lupin_app/src/ui/0/login.dart';
-import 'package:lupin_app/src/uiutil/top_navigator.dart';
-import 'package:provider/provider.dart';
 import 'package:lupin_app/src/ui/2/profile_setting_page.dart';
-import 'package:lupin_app/src/provider/user_info_provider.dart';
-import 'package:lupin_app/src/ui/0/login.dart';
+import 'package:lupin_app/src/uiutil/top_navigator.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -41,12 +38,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<UserInfoProvider>(context);
     setState(() {});
     var provider = Provider.of<UserInfoProvider>(context, listen: true);
     return SafeArea(
       child: ListView(
         children: [
-         Stack(
+          Stack(
             alignment: Alignment.center,
             children: [
               Column(
@@ -117,14 +115,16 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Positioned buildAvatar() {
-    return const Positioned(
+    String? path = Provider.of<UserInfoProvider>(context).currentUser!.path;
+    return Positioned(
       top: 100.0,
       child: CircleAvatar(
         radius: 100,
         backgroundColor: Colors.white,
         child: CircleAvatar(
           radius: 95,
-          backgroundImage: NetworkImage('https://picsum.photos/id/237/200/300'),
+          backgroundImage: path != null ? NetworkImage(path) : null,
+          child: path == null ? Icon(Icons.account_circle) : null,
         ),
       ),
     );
@@ -132,14 +132,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Padding buildSettings(UserInfoProvider provider) {
     String? phone = '';
-    if(provider.currentUser?.phone != null){
+    if (provider.currentUser?.phone != null) {
       phone = provider.currentUser?.phone!;
     }
     String userType = '';
-    if(provider.currentUser?.userType == UserType.student){
+    if (provider.currentUser?.userType == UserType.student) {
       userType = '학번';
-    }
-    else if(provider.currentUser?.userType == UserType.professor){
+    } else if (provider.currentUser?.userType == UserType.professor) {
       userType = '교번';
     }
 
