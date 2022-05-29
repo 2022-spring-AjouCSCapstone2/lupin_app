@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lupin_app/src/apis.dart';
 import 'package:lupin_app/src/model/course_model.dart';
 import 'package:lupin_app/src/provider/socket_provider.dart';
 import 'package:lupin_app/src/provider/user_info_provider.dart';
@@ -26,6 +27,7 @@ class _RoomForProfessorState extends State<RoomForProfessor> {
       print(path);
       isRecording = false;
       setState(() {});
+      Apis.instance.uploadVoice(widget.course, path!);
       return;
     }
 

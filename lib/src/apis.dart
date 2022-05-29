@@ -2,15 +2,11 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:logger/logger.dart';
+import 'package:lupin_app/src/model/course_model.dart';
+import 'package:lupin_app/src/model/course_note_model.dart';
 import 'package:lupin_app/src/model/course_post_model.dart';
 import 'package:lupin_app/src/model/my_courses_model.dart';
-import 'package:lupin_app/src/model/course_post_model.dart';
 import 'package:lupin_app/src/model/post_detail_model.dart';
-import 'package:lupin_app/src/model/course_note_model.dart';
-import 'package:lupin_app/src/model/note_model.dart';
-import 'model/post_model.dart';
-import 'package:logger/logger.dart';
-
 
 ///await Apis.instance.login(email: 'wdad', password: 'd'); 이렇게 사용하시면 됩니다
 class Apis {
@@ -168,6 +164,18 @@ class Apis {
     var formData = FormData.fromMap(
         {'image': await MultipartFile.fromFile(path, filename: 'image.png')});
     Response response = await dio.patch('/users/image', data: formData);
+
+    log.i(response.headers);
+    log.i(response.data);
+    return response;
+  }
+
+  Future<Response> uploadVoice(Course course, String path) async {
+    print(course.courseId);
+    var formData =
+        FormData.fromMap({'audio': await MultipartFile.fromFile(path)});
+    Response response =
+        await dio.post('/courses/${course.courseId}/logs', data: formData);
 
     log.i(response.headers);
     log.i(response.data);
