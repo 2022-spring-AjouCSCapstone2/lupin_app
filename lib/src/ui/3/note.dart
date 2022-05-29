@@ -71,6 +71,7 @@ class _NoteState extends State<Note> {
   Future<String> MakeList(Course course) async {
     var test = MakeDates(course);
     if(DateFormat('yyyyMMdd').format(date) == DateFormat('yyyyMMdd').format(DateTime.now())){
+      dates = dates.reversed.toList();
       return 'success';
     }
     else return 'fail';
@@ -131,10 +132,6 @@ class _NoteState extends State<Note> {
   }
 
   ListView buildCourseListView(courseId) {
-    dates = dates.reversed.toList();
-    print(count);
-    print(dates);
-    
     return ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,

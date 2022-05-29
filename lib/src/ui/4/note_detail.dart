@@ -11,6 +11,9 @@ import 'package:lupin_app/src/provider/post_provider.dart';
 import 'package:lupin_app/src/provider/note_provider.dart';
 import 'package:lupin_app/src/ui/4/post_write.dart';
 import 'package:lupin_app/src/ui/4/post_read.dart';
+import 'package:lupin_app/src/apis.dart';
+import 'package:dio/dio.dart';
+import 'package:lupin_app/src/ui/5/note_read.dart';
 
 import '../../model/course_post_model.dart';
 import '../../provider/app_state_provider.dart';
@@ -33,8 +36,8 @@ class _NoteDetailState extends State<NoteDetail> {
     setState(() {});
     return FutureBuilder(
       future:
-      //Provider.of<NoteProvider>(context, listen: false).getNote(widget.course.courseId, '20220528'),
-      Provider.of<NoteProvider>(context, listen: false).getNote(widget.course.courseId, DateFormat('yyyyMMdd').format(widget.date)),
+      Provider.of<NoteProvider>(context, listen: false).getNote(widget.course.courseId, '20220528'),
+      //Provider.of<NoteProvider>(context, listen: false).getNote(widget.course.courseId, DateFormat('yyyyMMdd').format(widget.date)),
       builder: (context, snapshot) {
         if (snapshot.hasData == false) {
           return const Center(
@@ -113,6 +116,10 @@ class _NoteDetailState extends State<NoteDetail> {
               Card(
                 child: ListTile(
                   onTap: () {
+                    AppState.pushPage(
+                      context,
+                      NoteRead(courseNotes.notes[index]),
+                    );
                   },
                   title: Row(
                     children: [

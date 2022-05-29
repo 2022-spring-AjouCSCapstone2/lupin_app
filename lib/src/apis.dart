@@ -5,6 +5,7 @@ import 'package:lupin_app/src/model/my_courses_model.dart';
 import 'package:lupin_app/src/model/course_post_model.dart';
 import 'package:lupin_app/src/model/post_detail_model.dart';
 import 'package:lupin_app/src/model/course_note_model.dart';
+import 'package:lupin_app/src/model/note_model.dart';
 import 'model/post_model.dart';
 import 'package:logger/logger.dart';
 

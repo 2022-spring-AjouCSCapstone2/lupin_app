@@ -41,7 +41,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {});
     var provider = Provider.of<UserInfoProvider>(context, listen: true);
     return SafeArea(
       child: ListView(
@@ -66,10 +65,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           themeColor: Colors.white,
                           leftWidget: TextButton(
                             onPressed: () {
-                              AppState.pushPage(
+                              Navigator.push(
                                 context,
-                                ProfileSettingPage(provider),
-                              );
+                                CupertinoPageRoute(
+                                  builder: (context) => ProfileSettingPage(provider),
+                                )
+                              ).then((value) {setState(() {});});
                             },
                             child: Text(
                               'Settings',

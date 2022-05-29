@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:lupin_app/src/model/course_model.dart';
 import 'package:lupin_app/src/model/course_note_model.dart';
 
@@ -37,11 +38,13 @@ class Note {
   String createdAt;
   Note_Course course;
 
-  Note(this.id, this.type, this.recordKey, this.script, this.content, this.isAnonymous, this.point, this.createdAt, this.course);
+  Note(this.id, this.type, this.recordKey, this.script, this.content, this.isAnonymous,
+      this.point, this.createdAt, this.course);
 
   @override
   String toString() {
     return 'Note{id: $id, type: $type, recordKey: $recordKey, script: $script, isAnonymous: $isAnonymous,'
         'point: $point, createdAt: $createdAt, course: $course}';
   }
+
 }

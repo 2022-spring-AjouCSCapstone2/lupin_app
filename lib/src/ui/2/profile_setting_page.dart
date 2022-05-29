@@ -203,7 +203,6 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                     filled: true,
                     labelText: '전화번호',
                   ),
-                  //validator: (value) => CheckValidate().validatePassword2(_pwController.text, value),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
               ],

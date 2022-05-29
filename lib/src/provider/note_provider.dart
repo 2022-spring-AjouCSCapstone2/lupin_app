@@ -12,4 +12,5 @@ class NoteProvider extends ChangeNotifier {
     noteCourse = notes;
     return noteCourse;
   }
+
 }
