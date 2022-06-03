@@ -128,23 +128,25 @@ class _NoteReadState extends State<NoteRead> {
                     ChewieAudio(
                       controller: chewieController,
                     ),
-                  // TextFormField(
-                  //   controller: _contentController,
-                  //   readOnly: true,
-                  //   maxLines: 20,
-                  //   textInputAction: TextInputAction.next,
-                  //   decoration: InputDecoration(
-                  //     focusedBorder: OutlineInputBorder(
-                  //       borderSide: BorderSide(color: Colors.grey, width: 0.0),
-                  //       borderRadius: BorderRadius.all(
-                  //         Radius.elliptical(13, 13),
-                  //       ),
-                  //     ),
-                  //   ),
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //   ),
-                  // ),
+                  if (chewieController == null)
+                    TextFormField(
+                      controller: _contentController,
+                      readOnly: true,
+                      maxLines: 20,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.grey, width: 0.0),
+                          borderRadius: BorderRadius.all(
+                            Radius.elliptical(13, 13),
+                          ),
+                        ),
+                      ),
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
                 ],
               ),
             ),

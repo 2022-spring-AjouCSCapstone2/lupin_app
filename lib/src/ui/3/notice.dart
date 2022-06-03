@@ -1,17 +1,15 @@
-
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lupin_app/src/model/course_model.dart';
-import 'package:lupin_app/src/provider/user_info_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:lupin_app/src/provider/post_provider.dart';
-import 'package:lupin_app/src/ui/4/post_write.dart';
-import 'package:lupin_app/src/ui/4/post_read.dart';
-import 'package:lupin_app/src/ui/4/notice_write.dart';
-import 'package:lupin_app/src/ui/4/notice_read.dart';
 import 'package:lupin_app/src/model/user_model.dart';
+import 'package:lupin_app/src/provider/post_provider.dart';
+import 'package:lupin_app/src/provider/user_info_provider.dart';
+import 'package:lupin_app/src/ui/4/notice_read.dart';
+import 'package:lupin_app/src/ui/4/notice_write.dart';
+import 'package:provider/provider.dart';
+
 import '../../model/course_post_model.dart';
 import '../../provider/app_state_provider.dart';
 import '../../uiutil/top_navigator.dart';
@@ -49,44 +47,39 @@ class _NoticeState extends State<Notice> {
             child: Column(
               children: [
                 Container(
-                  child: ListView(
-                    // padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    shrinkWrap: true,
-                    children: [
-                      const SizedBox(height: 20),
-                      topNavigator(
-                        context,
-                        '공지사항',
-                        leftWidget: Container(),
-                        rightWidget: Container(),
-                      ),
-                      const SizedBox(height: 20),
-                      Center(
-                        child: Text(
-                          '질문도 하고 퀴즈도 풀고~ 아자아자 오늘도 힘내자!',
-                          style: TextStyle(color: Colors.grey),
+                  child: Expanded(
+                    child: ListView(
+                      // padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      shrinkWrap: true,
+                      children: [
+                        const SizedBox(height: 20),
+                        topNavigator(
+                          context,
+                          '공지사항',
+                          leftWidget: Container(),
+                          rightWidget: Container(),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      Container(
-                        height: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
+                        const SizedBox(height: 20),
+                        Center(
+                          child: Text(
+                            '질문도 하고 퀴즈도 풀고~ 아자아자 오늘도 힘내자!',
+                            style: TextStyle(color: Colors.grey),
+                          ),
                         ),
-                      ),
-                      Container(
-                        child: buildCourseListView(provider),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
+                        const SizedBox(height: 20),
+                        Container(
+                          height: 10,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
+                        Container(
+                          child: buildCourseListView(provider),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -95,11 +88,12 @@ class _NoticeState extends State<Notice> {
                     padding: const EdgeInsets.symmetric(horizontal: 32.0),
                     child: TextButton.icon(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NoticeWrite(widget.course),
-                            ));
+                        Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    NoticeWrite(widget.course),
+                              ));
                       },
                       icon: Icon(Icons.mode_edit_outline_outlined),
                       label: Text('글 쓰기'),
