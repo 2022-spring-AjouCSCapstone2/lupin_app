@@ -1,3 +1,7 @@
+
+
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,6 +14,7 @@ import 'package:lupin_app/src/ui/3/room.dart';
 import 'package:lupin_app/src/ui/3/room_for_professor.dart';
 import 'package:lupin_app/src/uiutil/simple_dialog.dart';
 import 'package:lupin_app/src/uiutil/simple_dialog2.dart';
+import 'package:lupin_app/src/uiutil/simple_dialog3.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 class SocketProvider extends ChangeNotifier {
@@ -24,6 +29,7 @@ class SocketProvider extends ChangeNotifier {
   );
 
   String? currentRoomId;
+  Course? course;
 
   SocketProvider() {}
 
@@ -89,6 +95,14 @@ class SocketProvider extends ChangeNotifier {
       showSimpleDialog2(NavigationService.navigatorKey.currentContext!, '질문 도착',
           data['content'], name, data['id']);
     });
+
+    socket.on('roomClosed', (data) {
+      print('closed');
+      log.i(data);
+      print(course);
+      showSimpleDialog3(NavigationService.navigatorKey.currentContext!, '수업 종료', course);
+    });
+
     // socket.on('question', (data) {
     //   log.i(data);
     //   List quizList = data['quizLists'];
@@ -147,6 +161,7 @@ class SocketProvider extends ChangeNotifier {
   }
 
   void joinRoom(BuildContext context, Course course) {
+    this.course = course;
     socket.emitWithAck('joinRoom', {'courseId': course.courseId}, ack: (e) {
       log.i('방 참가 메시지 : $e');
       if (e['status'] == 'success') {
@@ -213,4 +228,5 @@ class SocketProvider extends ChangeNotifier {
       log.i('답변 메시지 :$e');
     });
   }
+
 }
